@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MHiker" parent="Theme.Material3.DayNight.NoActionBar">
+<!--        <item name="colorPrimary">#568072</item>-->
+<!--        <item name="colorPrimary">@color/light_primary</item>-->
+<!--        <item name="colorPrimaryVariant">#7F9A75</item>-->
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#568072</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
+    <style name="Theme.MHiker" parent="Base.Theme.MHiker" />
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+</resources>
+
+
+    <!--    https://stackoverflow.com/questions/29069070/completely-transparent-status-bar-and-navigation-bar-on-lollipop-->

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="error">#cc0000</color>
+
+    <color name="primary">#8EBA8B</color>
+    <color name="secondary">#568072</color>
+    <color name="primary_variant">#6BB59C</color>
+
+    <color name="secondary_variant">#B7DAAB</color>
+    <color name="primary_variant_2">#ECF8F4</color>
+
+    <color name="disabled">#A8A8A8</color>
+    <color name="dragbar">#B6B6B6</color>
+    <color name="tomato">#FF6347</color>
+
+    <!--    &lt;!&ndash;    FOr light theme&ndash;&gt;-->
+<!--    <color name="light_primary">#f1f0f2</color>-->
+<!--    <color name="light_secondary">#568072</color>-->
+<!--    <color name="light_primary_variant">#f1f0f2</color>-->
+<!--    <color name="light_secondary_variant">#f1f0f2</color>-->
+
+<!--    <color name="light_background">#FFFFFFFF</color>-->
+<!--    <color name="light_surface">#FFFFFFFF</color>-->
+
+<!--    <color name="light_on_primary">#f1f0f2</color>-->
+<!--    <color name="light_on_secondary">#f1f0f2</color>-->
+<!--    <color name="light_on_background">#FF000000</color>-->
+<!--    <color name="light_on_surface">#FF000000</color>-->
+<!--    <color name="light_on_error">#FFFFFFFF</color>-->
+
+
+<!--&lt;!&ndash;    For dark theme&ndash;&gt;-->
+<!--    <color name="dark_primary">#242820</color>-->
+<!--    <color name="dark_secondary">#f1f0f2</color>-->
+<!--    <color name="dark_primary_variant">#f1f0f2</color>-->
+<!--    <color name="dark_secondary_variant">#f1f0f2</color>-->
+
+<!--    <color name="dark_background">#201c1c</color>-->
+<!--    <color name="dark_surface">#201c1c</color>-->
+
+<!--    <color name="dark_on_primary">#f1f0f2</color>-->
+<!--    <color name="dark_on_secondary">#f1f0f2</color>-->
+<!--    <color name="dark_on_background">#FFFFFFFF</color>-->
+<!--    <color name="dark_on_surface">#FFFFFFFF</color>-->
+<!--    <color name="dark_on_error">#FFFFFFFF</color>-->
+
+
+</resources>

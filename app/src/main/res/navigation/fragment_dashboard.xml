@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_dashboard"
+    app:startDestination="@id/homepage">
+
+    <fragment
+        android:id="@+id/homepage"
+        android:name="com.example.m_hiker.Home.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home2_to_createHikeIndex"
+            app:destination="@id/createNewHike"
+            app:enterAnim="@anim/from_right_enter"
+            app:exitAnim="@anim/from_left_exit"
+            app:popEnterAnim="@anim/from_left_enter"
+            app:popExitAnim="@anim/from_right_exit"  />
+        <action
+            android:id="@+id/action_homepage_to_viewHike"
+            app:destination="@id/viewHike"
+            app:enterAnim="@anim/from_right_enter"
+            app:exitAnim="@anim/from_right_exit"
+            app:popEnterAnim="@anim/from_right_exit"
+            app:popExitAnim="@anim/from_right_exit" />
+        <action
+            android:id="@+id/action_homepage_to_editHike"
+            app:destination="@id/editHike"
+            app:enterAnim="@anim/from_right_enter"
+            app:exitAnim="@anim/from_left_exit"
+            app:popEnterAnim="@anim/from_left_enter"
+            app:popExitAnim="@anim/from_right_exit"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/slashScreen"
+        android:name="com.example.m_hiker.SlashScreen"
+        android:label="fragment_slash_screen"
+        tools:layout="@layout/fragment_slash_screen" >
+        <action
+            android:id="@+id/action_slashScreen_to_home2"
+            app:destination="@id/homepage" />
+        <action
+            android:id="@+id/action_slashScreen_to_introSlides"
+            app:destination="@id/introSlides" />
+    </fragment>
+    <fragment
+        android:id="@+id/createNewHike"
+        android:name="com.example.m_hiker.CreateHikePage.CreateHikeIndex"
+        android:label="fragment_create_hike_index"
+        tools:layout="@layout/fragment_create_hike_index" />
+    <fragment
+        android:id="@+id/viewHike"
+        android:name="com.example.m_hiker.Hike.ViewHike"
+        android:label="fragment_view_hike"
+        tools:layout="@layout/fragment_view_hike" >
+        <action
+            android:id="@+id/action_viewHike_to_createObservation"
+            app:destination="@id/createObservation" />
+        <action
+            android:id="@+id/action_viewHike_to_viewObservation"
+            app:destination="@id/viewObservation"
+            app:enterAnim="@anim/from_right_enter"
+            app:exitAnim="@anim/from_left_exit"
+            app:popEnterAnim="@anim/from_left_enter"
+            app:popExitAnim="@anim/from_right_exit"
+            app:popUpTo="@id/viewObservation" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/createObservation"
+        android:name="com.example.m_hiker.CreateObservation.CreateObservation"
+        android:label="fragment_create_observation"
+        tools:layout="@layout/fragment_create_observation" />
+    <fragment
+        android:id="@+id/introSlides"
+        android:name="com.example.m_hiker.IntroSlides.IntroSlides"
+        android:label="fragment_intro_slides"
+        tools:layout="@layout/fragment_intro_slides" />
+    <fragment
+        android:id="@+id/viewObservation"
+        android:name="com.example.m_hiker.Observation.ViewObservation"
+        android:label="fragment_view_observation"
+        tools:layout="@layout/fragment_view_observation" />
+    <fragment
+        android:id="@+id/editHike"
+        app:enterAnim="@anim/from_right_enter"
+        app:exitAnim="@anim/from_left_exit"
+        app:popEnterAnim="@anim/from_left_enter"
+        app:popExitAnim="@anim/from_right_exit"
+        android:name="com.example.m_hiker.Hike.EditHike"
+        android:label="fragment_edit_hike"
+        tools:layout="@layout/fragment_edit_hike" />
+</navigation>

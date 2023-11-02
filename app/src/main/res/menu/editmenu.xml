@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/generalitem"
+        android:icon="@drawable/settings_fill0_wght400_grad0_opsz24"
+        android:title="General" />
+    <item
+        android:id="@+id/locationitem"
+        android:icon="@drawable/locationempty"
+        android:title="Location" />
+    <item
+        android:id="@+id/optionalitem"
+        android:icon="@drawable/pending"
+        android:title="Optional" />
+</menu>

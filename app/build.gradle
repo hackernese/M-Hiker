@@ -1,0 +1,64 @@
+
+plugins {
+    id 'com.android.application'
+    id 'androidx.navigation.safeargs'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
+
+android {
+    namespace 'com.example.m_hiker'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.m_hiker"
+        minSdk 25
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    // Extra dependencies
+
+    implementation "androidx.core:core-splashscreen:1.0.0" // Custom Slash screen
+    implementation "com.google.android.gms:play-services-maps:18.2.0" // Used for
+    implementation "com.google.android.gms:play-services-location:21.0.1" // Getting the current location
+    implementation 'com.karumi:dexter:6.2.3' // This makes requesting permissions better and cleaner
+
+//    // These two provides great google services
+//    implementation 'com.google.maps:google-maps-services:2.2.0'
+//    implementation 'org.slf4j:slf4j-simple:1.7.25'
+
+    // Add the Retrofit dependency to your app-level build.gradle file
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+}
+
