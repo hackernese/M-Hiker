@@ -2,11 +2,16 @@ package com.example.m_hiker.database;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,8 +36,14 @@ public class ObservationMedia implements CommonTable{
 
 
     public int delete(){
-        return 0;
 
+        SQLiteDatabase thisdb = db.getWritableDatabase();
+        // Define 'where' part of query.
+        String selection = "id LIKE ?";
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { "" + this.id };
+        // Issue SQL statement.
+        return thisdb.delete(tablename, selection, selectionArgs);
     }
     public static void query(){
 
@@ -48,6 +59,16 @@ public class ObservationMedia implements CommonTable{
     public int observation_id;
     String created;
     String modified;
+
+    public Uri toUri(){
+        Log.d("debug", this.path);
+        return Uri.fromFile(new File(this.path));
+    }
+
+//    public Bitmap getBitmapResource(){
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+//    }
 
     public ObservationMedia(int observeid, String path, boolean highlight){
         this.is_hightlight = highlight;

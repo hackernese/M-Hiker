@@ -1,21 +1,27 @@
 package com.example.m_hiker.Hike.ObservationCard;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.m_hiker.R;
+import com.example.m_hiker.database.ObservationMedia;
+
+import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ObservationCardImage#newInstance} factory method to
+ * Use the {@link ObservationThumbnail#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ObservationCardImage extends Fragment {
+public class ObservationThumbnail extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,8 +32,15 @@ public class ObservationCardImage extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ObservationCardImage() {
+    public ObservationThumbnail() {
         // Required empty public constructor
+    }
+
+    ObservationMedia media;
+
+    public ObservationThumbnail setmedia(ObservationMedia media){
+        this.media = media;
+        return this;
     }
 
     /**
@@ -39,8 +52,8 @@ public class ObservationCardImage extends Fragment {
      * @return A new instance of fragment ObservationCardImage.
      */
     // TODO: Rename and change types and number of parameters
-    public static ObservationCardImage newInstance(String param1, String param2) {
-        ObservationCardImage fragment = new ObservationCardImage();
+    public static ObservationThumbnail newInstance(String param1, String param2) {
+        ObservationThumbnail fragment = new ObservationThumbnail();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +74,16 @@ public class ObservationCardImage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_observation_card_image, container, false);
+        View view = inflater.inflate(R.layout.fragment_observation_card_image, container, false);
+
+
+        File file = new File(media.path);
+        Uri uri = Uri.fromFile(file);
+
+
+        ImageView image = view.findViewById(R.id.obimage);
+        image.setImageURI(uri);
+
+        return view;
     }
 }

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,15 +25,20 @@ import com.example.m_hiker.CreateObservation.ImageGrid.ImageItem;
 import com.example.m_hiker.CreateObservation.screens.CreateObservationDate;
 import com.example.m_hiker.CreateObservation.screens.CreateObservationSlideDetails;
 import com.example.m_hiker.CreateObservation.screens.CreateObservationSlideMedia;
+import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Observation;
 import com.example.m_hiker.database.ObservationMedia;
 import com.example.m_hiker.utils.debug;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -87,6 +93,7 @@ public class CreateObservation extends Fragment {
         db = DatabaseMHike.init(getContext());
     }
 
+    Integer hike_id = -1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,7 +102,7 @@ public class CreateObservation extends Fragment {
 
         // Extracting the current hike ID
 
-        Integer hike_id = -1;
+
         Bundle args = getArguments();
 
         if(args!= null && args.containsKey("id"))
@@ -104,10 +111,9 @@ public class CreateObservation extends Fragment {
         // Initialize ViewPager2 for sliding contents
         ViewPager2 pager = (ViewPager2) view.findViewById(R.id.createobserveslider);
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new CreateObservationSlideMedia());
         fragments.add(new CreateObservationSlideDetails());
         fragments.add(new CreateObservationDate());
-
+        fragments.add(new CreateObservationSlideMedia());
 
         // Creating an adapter so the PageView2 can work properly
         CreateObservationAdapter adapter = new CreateObservationAdapter(this, fragments);
@@ -139,18 +145,70 @@ public class CreateObservation extends Fragment {
             }
         });
 
-        // Click to create observation
+        view.findViewById(R.id.backbtn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
+
         view.findViewById(R.id.createobservationbtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view_local) {
 
+                TextInputEditText titlebox = fragments.get(0).getView().findViewById(R.id.obtitle);
+                TextInputEditText comment = fragments.get(0).getView().findViewById(R.id.commentbox);
+                TextInputEditText weatherbox = fragments.get(0).getView().findViewById(R.id.weatherinput);
+                TextInputEditText categorybox = fragments.get(0).getView().findViewById(R.id.categorybox);
+                String title = titlebox.getText().toString().trim();
+                String category = categorybox.getText().toString().trim();
+                String weather = weatherbox.getText().toString().trim();
+                String comments = comment.getText().toString().trim();
+
+                if(title.length()==0){
+                    // Alert user
+                    titlebox.setError("This field cannot be empty");
+                    ToastMessage.error(view, "Missing title");
+                    pager.setCurrentItem(0, true);
+                    return;
+                }
+                if(category.equals("None")){
+                    // Alert user
+                    ToastMessage.error(view, "Please choose a category");
+                    pager.setCurrentItem(0, true);
+                    return;
+                }
+
+                View page2 = fragments.get(1).getView();
+                if(page2==null){
+                    // Alert user
+                    ToastMessage.error(view, "Please select date and time");
+                    pager.setCurrentItem(1, true);
+                    return;
+                }
+
+                TextInputEditText timebox = page2.findViewById(R.id.timebox);
+                String time = timebox.getText().toString().trim();
+                CalendarView datepicker = page2.findViewById(R.id.calendarView);
+                // Converting the date into readable format
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+                String date = sdf.format(datepicker.getDate());
+
+                if(time.length()==0){
+                    // Alert user
+                    timebox.setError("This field cannot be empty");
+                    ToastMessage.error(view, "Please select date and time");
+                    pager.setCurrentItem(1, true);
+                    return;
+                }
+
                 // Generate faker data first to make sure it works properly
-                String title = debug.generate_faker_text(10,12);
-                String category = "Testhike";
-                String weather = "Rainy";
-                String date = "11/23/2023";
-                String time = "11:11";
-                String comments = debug.generate_faker_text(20, 50);
+//                String title = debug.generate_faker_text(10,12);
+//                String category = "Testhike";
+//                String weather = "Rainy";
+//                String date = "11/23/2023";
+//                String time = "11:11";
+//                String comments = debug.generate_faker_text(20, 50);
 
                 // Extracting all exsiting images and video from the media one to put into the ObservationMedia table
                 // First access the Adapter of the Slider first
@@ -166,21 +224,22 @@ public class CreateObservation extends Fragment {
                         date,
                         time,
                         comments,
-                        false, 1
+                        false, hike_id
                 );
+
                 long ob_id = db.insert(newob);
 
                 // Inserting media into the database with the provided observation id
                 for(ImageItem item : medialist)
                 {
-                    Log.d("debug", item.uripath.getPath());
+                    Log.d("debug", item.path);
 
                     ObservationMedia new_media = new ObservationMedia(
                         ob_id,
-                        item.uripath.getPath(),
+                        item.path,
                             false
                     );
-                    db.insert(new_media);
+                    Log.d("debug", "DATA => " + db.insert(new_media));
                 }
 
                 // Simply navigate back to the hike page

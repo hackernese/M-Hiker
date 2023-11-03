@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -63,16 +64,25 @@ public class CreateObservationDate extends Fragment {
         }
     }
 
+    View parentView;
+
+    @Nullable
+    @Override
+    public View getView() {
+        return parentView;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_create_observation_date, container, false);
+        parentView = inflater.inflate(R.layout.fragment_create_observation_date, container, false);
+        View view = parentView;
 
         TextInputEditText timedatebox = (TextInputEditText)view.findViewById(R.id.timebox);
         timedatebox.setFocusable(false);
 
-        view.findViewById(R.id.timebox).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.timebtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -82,6 +92,7 @@ public class CreateObservationDate extends Fragment {
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
 
                         // When the user selects a new hour and minute, it will call this
+                        timedatebox.setText(hour + ":" + minute);
 
                     }
                 };

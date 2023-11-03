@@ -1,5 +1,6 @@
 package com.example.m_hiker.CreateObservation.ImageGrid;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
@@ -62,16 +64,14 @@ public class ImageGridAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        if(inflater==null)
+        if (inflater == null)
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(view==null)
+        if (view == null)
             view = inflater.inflate(R.layout.image_item, null);
 
-        if (uris.get(i).is_add){
+        if (uris.get(i).is_add) {
             view = inflater.inflate(R.layout.image_item_add, null);
-
             view.setOnClickListener(launch);
-
             return view;
         }
 

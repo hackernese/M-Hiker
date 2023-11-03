@@ -6,13 +6,19 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.m_hiker.Dialogs.DeleteWarning;
 import com.example.m_hiker.R;
 import com.example.m_hiker.components.SocialMedia;
+import com.example.m_hiker.database.Observation;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +67,13 @@ public class ViewObservation extends Fragment {
         }
     }
 
+    TextView describeob;
+    TextView timeob;
+    TextView dateob;
+    TextView weather;
+    TextView category;
+    TextView title;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,6 +81,25 @@ public class ViewObservation extends Fragment {
 
         Context context = getContext();
         View view = inflater.inflate(R.layout.fragment_view_observation, container, false);
+
+        Bundle bundle = getArguments();
+        Observation ob = ((Observation.ParcelObservation)bundle.getParcelable("object")).object;
+
+        describeob = view.findViewById(R.id.describeob);
+        timeob = view.findViewById(R.id.timeob);
+        dateob = view.findViewById(R.id.calenderob);
+        weather = view.findViewById(R.id.weather);
+        category = view.findViewById(R.id.categoryob);
+        title = view.findViewById(R.id.titleob);
+
+        title.setText(ob.title);
+        timeob.setText(ob.time);
+        dateob.setText(ob.date);
+        describeob.setText(ob.comments.trim().length()==0  ? "No comments available" : ob.comments.trim());
+        category.setText(ob.category);
+        weather.setText(ob.weather.trim().length()==0 ? "Unknown" : ob.weather.trim());
+
+
 
         view.findViewById(R.id.sharebtnob).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,28 +111,29 @@ public class ViewObservation extends Fragment {
         view.findViewById(R.id.deletebtnob).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setTitle("Whatever");
-//                builder.setMessage("DAWD");
 
-                View dialogView = LayoutInflater.from(context).inflate(R.layout.social_media, null);
-                builder.setView(dialogView);
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                DeleteWarning dialog = new DeleteWarning(new DeleteWarning.Callback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void cancel() {
 
                     }
-                });
-                builder.setPositiveButton("delete", new DialogInterface.OnClickListener() {
+
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void agree() {
 
                     }
                 });
 
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                dialog.show(getParentFragmentManager(), "Warning");
+            }
+        });
+
+        view.findViewById(R.id.editbtnob).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("object", ob.getParcelObject());
+                Navigation.findNavController(view).navigate(R.id.action_viewObservation_to_editObservation2, bundle);
             }
         });
 

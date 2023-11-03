@@ -6,9 +6,13 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.example.m_hiker.database.CommonTable;
+
 import java.io.File;
 
 public class ImageItem {
+
+    public CommonTable object;
 
     public String path;
     public Uri uripath;
@@ -23,6 +27,10 @@ public class ImageItem {
     }
     public ImageItem(Uri path){
         this.uripath = path;
+    }
+
+    public boolean isadded(){
+        return this.is_add;
     }
 
     public ImageItem setIsAdd(Boolean value){

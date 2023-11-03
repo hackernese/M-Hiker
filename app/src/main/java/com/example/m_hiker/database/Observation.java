@@ -2,11 +2,17 @@ package com.example.m_hiker.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.Observable;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Observation implements CommonTable {
     public static DatabaseMHike db;
@@ -14,7 +20,7 @@ public class Observation implements CommonTable {
     public ContentValues insertValues(){
         ContentValues values = new ContentValues();
 
-        values.put("title", this.time);
+        values.put("title", this.title);
         values.put("category", this.category);
         values.put("weather", this.weather);
         values.put("date", this.date);
@@ -34,9 +40,96 @@ public class Observation implements CommonTable {
 
     }
     public int delete(){
-        return 0;
+        SQLiteDatabase thisdb = db.getWritableDatabase();
+        // Define 'where' part of query.
+        String selection = "id LIKE ?";
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { "" + this.id };
+        // Issue SQL statement.
+        return thisdb.delete(tablename, selection, selectionArgs);
+
     }
-    public static ArrayList<Observation> query(){
+
+//    public static ArrayList<Observation> query(int id){
+//
+//    }
+
+    public static class ParcelObservation implements Parcelable {
+
+        public Observation object;
+
+        public ParcelObservation setobject(Observation object){
+            this.object = object;
+            return this;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Parcelable.Creator<ParcelObservation> CREATOR = new Parcelable.Creator<ParcelObservation>(){
+            @Override
+            public ParcelObservation createFromParcel(Parcel parcel) {
+                return null;
+            }
+
+            @Override
+            public ParcelObservation[] newArray(int i) {
+                return new ParcelObservation[0];
+            }
+        };
+
+        @Override
+        public void writeToParcel(@NonNull Parcel parcel, int i) {
+
+        }
+    };
+
+    public ParcelObservation getParcelObject(){
+        return (new ParcelObservation()).setobject(this);
+    }
+
+    public ArrayList<ObservationMedia> getmedias(){
+
+        // Extract all medias relating to this current Observation
+
+        ArrayList<ObservationMedia> ret = new ArrayList<>();
+        SQLiteDatabase query = db.getReadableDatabase();
+        String[] projection = {
+                "id",
+                "path",
+                "highlight",
+                "observeid",
+        };
+
+
+        String[] arguments = {"" + this.id}; // Used used in WHERE clause
+        Cursor cursor = query.query(
+                ObservationMedia.tablename,
+                projection,
+                "observeid = ? ",  arguments,
+                null, null, ""
+        );
+
+        while(cursor.moveToNext()){
+
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            String path = cursor.getString(cursor.getColumnIndexOrThrow("path"));
+            int highlight = cursor.getInt(cursor.getColumnIndexOrThrow("highlight"));
+            int observeid = cursor.getInt(cursor.getColumnIndexOrThrow("observeid"));
+
+            ObservationMedia temp = new ObservationMedia(
+                    observeid, path, highlight == 1 ? true : false
+            );
+            temp.id = id;
+            ret.add(temp);
+        }
+
+        return ret;
+    }
+
+    public static ArrayList<Observation> query(String column, String value){
         ArrayList<Observation> ret = new ArrayList<>();
         SQLiteDatabase query = db.getReadableDatabase();
         String[] projection = {
@@ -51,13 +144,20 @@ public class Observation implements CommonTable {
                 "hike_id"
         };
 
-        String[] arguments = {}; // Used used in WHERE clause
+
+        String selection = "";
+
+        if(column.length()>0){
+            selection = column + " = ?";
+        }
+
+        String[] arguments = {value}; // Used used in WHERE clause
 
         Cursor cursor = query.query(
                 tablename,
                 projection,
-                "",  arguments,
-                null, null, ""
+                selection,  arguments,
+                null, null, "created DESC"
         );
 
         while(cursor.moveToNext()){

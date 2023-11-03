@@ -94,7 +94,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Titleob"
+            app:layout_constraintTop_toBottomOf="@+id/titleob"
             app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -115,7 +115,7 @@
                     app:srcCompat="@drawable/cloud_fill0_wght400_grad0_opsz24" />
 
                 <TextView
-                    android:id="@+id/weatherob"
+                    android:id="@+id/weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -216,7 +216,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/Titleob"
+            android:id="@+id/titleob"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/describeob"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"

@@ -109,6 +109,7 @@ public class DatabaseMHike extends  SQLiteOpenHelper{
     public long insert(CommonTable record){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues vals = record.insertValues();
+        Log.d("debug", "INSERTED");
         return db.insert(record.gettablename(), null, vals);
     }
 

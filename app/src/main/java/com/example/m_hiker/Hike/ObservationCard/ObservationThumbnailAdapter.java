@@ -1,12 +1,14 @@
 package com.example.m_hiker.Hike.ObservationCard;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ObservationThumbnailAdapter extends FragmentStateAdapter {
 
@@ -26,6 +28,7 @@ public class ObservationThumbnailAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return fragments.size();
+
     }
 
 }

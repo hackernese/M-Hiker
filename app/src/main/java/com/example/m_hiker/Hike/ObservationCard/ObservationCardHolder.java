@@ -1,23 +1,18 @@
 package com.example.m_hiker.Hike.ObservationCard;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.Observation;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -39,71 +34,54 @@ public class ObservationCardHolder extends RecyclerView.ViewHolder {
     ArrayList<Fragment> fragments = new ArrayList<>();
     View parentView;
 
+    Observation object;
+
     public void setpager(Observation ob, Fragment activity){
-        fragments.add(new ObservationCardImage());
-        fragments.add(new ObservationCardImage());
-        fragments.add(new ObservationCardImage());
+//        this.object = ob;
+        fragments.add(new ObservationThumbnail());
+        fragments.add(new ObservationThumbnail());
+        fragments.add(new ObservationThumbnail());
         ObservationThumbnailAdapter adapter = new ObservationThumbnailAdapter(activity, fragments);
         obpager.setAdapter(adapter);
     }
+
+    FragmentManager manager;
+
+
+    ImageButton bookmark;
+    ImageButton bookmarkselected;
+
+    public ObservationCardHolder setfragmentmanager(FragmentManager frag){
+        this.manager = frag;
+        return this;
+    }
+
     public ObservationCardHolder(@NonNull View itemView) {
         super(itemView);
         self = itemView;
         obpager = itemView.findViewById(R.id.observationpager);
-
         category = itemView.findViewById(R.id.categoryobcard);
         title = itemView.findViewById(R.id.titleobcard);
+        bookmark = itemView.findViewById(R.id.bookmarkempty);
+        bookmarkselected = itemView.findViewById(R.id.bookmarkfull);
 
-        itemView.findViewById(R.id.accessobbtn).setOnClickListener(new View.OnClickListener() {
+
+        // Un- Bookmark this observation as the default for the Hike
+        bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog dialog = new BottomSheetDialog(context);
-                View dialogview = LayoutInflater.from(context).inflate(
-                        R.layout.hike_ob_bottomsheet,
-                        (LinearLayout)view.findViewById(R.id.obcontainer)
-                );
+                bookmarkselected.setVisibility(View.VISIBLE);
+                bookmark.setVisibility(View.GONE);
 
-                Button delete = dialogview.findViewById(R.id.deletebtn);
-                Button share = dialogview.findViewById(R.id.sharebtn);
-                Button edit = dialogview.findViewById(R.id.editbtnhike);
-                Button viewbtn = dialogview.findViewById(R.id.viewbtn);
+            }
+        });
 
-                // Create a bundle to pass to other view
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", id);
-
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-                share.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
-                viewbtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Navigation.findNavController(parentView).navigate(R.id.action_viewHike_to_viewObservation, bundle);
-                        dialog.dismiss();
-                    }
-                });
-
-                edit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
-
-                // Setting default value
-                dialog.setContentView(dialogview);
-                dialog.show();
+        // Bookmark this observation as the default for the Hike
+        bookmarkselected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookmarkselected.setVisibility(View.GONE);
+                bookmark.setVisibility(View.VISIBLE);
             }
         });
 

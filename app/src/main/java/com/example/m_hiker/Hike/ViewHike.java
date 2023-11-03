@@ -1,5 +1,7 @@
 package com.example.m_hiker.Hike;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,16 +12,21 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.m_hiker.Dialogs.DeleteWarning;
+import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.Hike.ObservationCard.ObservationCardAdapter;
 import com.example.m_hiker.R;
 import com.example.m_hiker.components.HikesCard.HikeCardAdapter;
 import com.example.m_hiker.database.Observation;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
@@ -62,6 +69,10 @@ public class ViewHike extends Fragment {
 
 
     }
+    String name = "temp";
+    int hike_id = 1;
+    List<Observation> allobservation;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,25 +81,38 @@ public class ViewHike extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_view_hike, container, false);
 
-
         // Extracting arguments;
-        String name = "temp";
-        int hike_id = 1;
-
-//        if(getArguments().containsKey("name"))
-//            name = getArguments().getString("name");
-//        if(getArguments().containsKey("id"))
-//            hike_id = getArguments().getInt("id");
+        if(getArguments().containsKey("name"))
+            name = getArguments().getString("name");
+        if(getArguments().containsKey("id"))
+            hike_id = getArguments().getInt("id");
 
         // Setting the correct text labels of this
         TextView toolbar = view.findViewById(R.id.toolbarhikedetails);
         toolbar.setText(name);
 
-        // Extracting all observations
-        List<Observation> allobservation = Observation.query();
+        // Extracting all observations and binding to the RecylerView
+        allobservation = Observation.query("hike_id", ""+hike_id);
         RecyclerView observationlist = view.findViewById(R.id.observationlist);
         observationlist.setLayoutManager(new LinearLayoutManager(getContext()));
-        observationlist.setAdapter(new ObservationCardAdapter(getContext(), allobservation, this, view));
+        Context context = getContext();
+
+        ObservationCardAdapter adapter =  new ObservationCardAdapter(context, allobservation, this, view);
+        observationlist.setAdapter(adapter);
+        adapter.setcallback( new ObservationCardAdapter.Callback() {
+            @Override
+            public void delete() {
+                adapter.observations = Observation.query("hike_id", ""+hike_id);
+                observationlist.setAdapter(adapter);
+            }
+
+            @Override
+            public void share() {
+
+            }
+        });
+
+
 
         // -------- click events ---------------
         view.findViewById(R.id.addnewob).setOnClickListener(new View.OnClickListener() {
@@ -96,7 +120,7 @@ public class ViewHike extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", hike_id);
-                Navigation.findNavController(view).navigate(R.id.action_viewHike_to_viewObservation, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_viewHike_to_createObservation, bundle);
             }
         });
         view.findViewById(R.id.backbtnnavigate).setOnClickListener(new View.OnClickListener() {

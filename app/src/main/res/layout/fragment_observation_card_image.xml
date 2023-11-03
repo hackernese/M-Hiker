@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".Hike.ObservationCard.ObservationCardImage">
+    tools:context=".Hike.ObservationCard.ObservationThumbnail">
 
     <ImageView
         android:id="@+id/obimage"

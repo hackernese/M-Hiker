@@ -66,6 +66,9 @@
             app:popEnterAnim="@anim/from_left_enter"
             app:popExitAnim="@anim/from_right_exit"
             app:popUpTo="@id/viewObservation" />
+        <action
+            android:id="@+id/action_viewHike_to_editObservation2"
+            app:destination="@id/editObservation2" />
 
     </fragment>
     <fragment
@@ -82,7 +85,11 @@
         android:id="@+id/viewObservation"
         android:name="com.example.m_hiker.Observation.ViewObservation"
         android:label="fragment_view_observation"
-        tools:layout="@layout/fragment_view_observation" />
+        tools:layout="@layout/fragment_view_observation" >
+        <action
+            android:id="@+id/action_viewObservation_to_editObservation2"
+            app:destination="@id/editObservation2" />
+    </fragment>
     <fragment
         android:id="@+id/editHike"
         app:enterAnim="@anim/from_right_enter"
@@ -92,4 +99,9 @@
         android:name="com.example.m_hiker.Hike.EditHike"
         android:label="fragment_edit_hike"
         tools:layout="@layout/fragment_edit_hike" />
+    <fragment
+        android:id="@+id/editObservation2"
+        android:name="com.example.m_hiker.Observation.Edit.EditObservation"
+        android:label="fragment_edit_observation"
+        tools:layout="@layout/fragment_edit_observation" />
 </navigation>

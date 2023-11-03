@@ -2,16 +2,21 @@ package com.example.m_hiker.CreateObservation.screens;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.m_hiker.MultiChoiceBottomSheet.MultiChoiceSheet;
 import com.example.m_hiker.R;
+import com.example.m_hiker.components.MultiChoiceDialog.MultiChoiceSheetAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.w3c.dom.Text;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,16 +65,47 @@ public class CreateObservationSlideDetails extends Fragment {
         }
     }
 
+    View parentview;
+
+    @Nullable
+    @Override
+    public View getView() {
+        return parentview;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_create_observation_slide_details, container, false);
+        parentview = inflater.inflate(R.layout.fragment_create_observation_slide_details, container, false);
+        View view = parentview;
 
-
-        // Disabling some stuffs
+                // Disabling some stuffs
         TextInputEditText editcategory = (TextInputEditText)view.findViewById(R.id.categorybox);
         editcategory.setFocusable(false);
+        editcategory.setText("None");
+
+        Button catebtn = view.findViewById(R.id.categoryboxbtn);
+        catebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    MultiChoiceSheet sheet = new MultiChoiceSheet(v, getActivity(), "Category");
+
+                    sheet.option("None", true)
+                            .option("Animal")
+                            .option("Landscape")
+                            .option("Weather")
+                            .option("Discovery");
+
+                    sheet.show(new MultiChoiceSheet.Callback() {
+                        @Override
+                        public void onchange(String key, boolean value) {
+                            if(value)
+                                editcategory.setText(key.trim());
+                        }
+                    });
+            }
+        });
 
         // Entering some default data
         TextInputEditText commentbox = (TextInputEditText)view.findViewById(R.id.commentbox);
