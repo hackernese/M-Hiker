@@ -1,10 +1,7 @@
-package com.example.m_hiker.components.HikesCard;
-
-import static java.security.AccessController.getContext;
+package com.example.m_hiker.Home.HikesCard;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.m_hiker.Dialogs.DeleteWarning;
 import com.example.m_hiker.Dialogs.ToastMessage;
-import com.example.m_hiker.Home.HomeDirections;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Hikes;
@@ -32,7 +28,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
 
@@ -66,7 +61,7 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
 
     private List<Integer> selected = new ArrayList<>();
 
-    private List<HikeCardViewHolder> holderlist = new ArrayList<>();
+    public List<HikeCardViewHolder> holderlist = new ArrayList<>();
 
     private boolean inselectedmode = false;
 
@@ -84,6 +79,7 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
     private void hideall(){
 
     }
+
 
     private void checkbiggerthan1select(){
 
@@ -271,7 +267,6 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
                     item.islove = !item.islove;
                     holder.update_favorite_status(item.islove);
                 }
-
             }
         });
 

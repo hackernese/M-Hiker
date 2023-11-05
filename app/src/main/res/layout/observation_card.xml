@@ -169,34 +169,6 @@
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout5"
                 app:srcCompat="@drawable/chevron" />
 
-            <ImageButton
-                android:id="@+id/bookmarkempty"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/ripple_slight_round"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_bookmark_border_24" />
-
-            <ImageButton
-                android:id="@+id/bookmarkfull"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/ripple_effect"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                android:src="@drawable/bookmarkfull"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

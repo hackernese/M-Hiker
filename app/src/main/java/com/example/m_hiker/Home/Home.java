@@ -22,9 +22,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
 
+import com.example.m_hiker.Home.BigCard.BigCardAdapter;
 import com.example.m_hiker.R;
-import com.example.m_hiker.components.HikesCard.HikeCardAdapter;
+import com.example.m_hiker.Home.HikesCard.HikeCardAdapter;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Hikes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -91,7 +94,8 @@ public class Home extends Fragment {
     String search_unit = "";
     String search_name = "";
 
-    private void reapply_adapter_with_search_params(RecyclerView recyler, HikeCardAdapter adapter){
+    GridView grid;
+    private void reapply_adapter_with_search_params(GridCardAdapter adapter){
 
         HashMap<String, String> params = new HashMap<>();
         HashMap<String, Integer> paramsint = new HashMap<>();
@@ -114,12 +118,11 @@ public class Home extends Fragment {
             params.put("location", search_location);
 
         ArrayList<Hikes> temphikes = Hikes.query(params, paramsint);
-        adapter.setnewitems(temphikes);
-        recyler.setAdapter(adapter);
-    }
+        adapter.setnewitems(temphikes);}
 
     SpeechRecognizer recognizer;
 
+    private int viewstate = 1; // 1 == List, 2 == Grid big, 3 = Grid super big
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,6 +131,9 @@ public class Home extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        grid = view.findViewById(R.id.hikecardgrid);
+
+        // Add new hike button
         view.findViewById(R.id.addhikebtn).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -140,17 +146,32 @@ public class Home extends Fragment {
         RecyclerView list_of_hike_view = view.findViewById(R.id.listofhikes);
         list_of_hike_view.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        allhikes = Hikes.query();
-        HikeCardAdapter adapter = new HikeCardAdapter(getContext(), allhikes, view).setManager(getParentFragmentManager());
-        adapter.setcallback(new HikeCardAdapter.Callback() {
+        // Setting click actions for the utility icons on the top bar ( sort, view, search, etc... )
+        ImageButton sorticon = view.findViewById(R.id.sorticon);
+        sorticon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onchange() {
-                adapter.items = Hikes.query();
-                list_of_hike_view.setAdapter(adapter);
+            public void onClick(View view) {
             }
         });
 
-        list_of_hike_view.setAdapter(adapter);
+        // Setting adapters for Grid and RecylerView
+        allhikes = Hikes.query();
+        GridCardAdapter adapter = new GridCardAdapter(getContext(), allhikes, view, getParentFragmentManager());
+        grid.setAdapter(adapter);
+
+
+//        HikeCardAdapter adapter = new HikeCardAdapter(getContext(), allhikes, view).setManager(getParentFragmentManager());
+//        BigCardAdapter adapterbigcard = new BigCardAdapter(getContext(),allhikes, view, getParentFragmentManager(), adapter);
+
+        // Setting callbacks on adapter
+//        adapter.setcallback(new HikeCardAdapter.Callback() {
+//            @Override
+//            public void onchange() {
+//                adapter.items = Hikes.query();
+//                list_of_hike_view.setAdapter(adapter);
+//            }
+//        });
+//
 
         // Detect if the recycle view is at its top
         View overlaytop = view.findViewById(R.id.overlaytop);
@@ -185,24 +206,6 @@ public class Home extends Fragment {
             }
         });
 
-
-        // Setting up the speech
-        recognizer = new SpeechRecognizer(getActivity());
-
-        // Search with voice if possible
-        view.findViewById(R.id.voiceicon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-//                try {
-//                    startActivityForResult(recognizer.recognizerIntent, 100);
-//                } catch (ActivityNotFoundException e) {
-//                    Log.d("debug", "WAD");
-//                }
-            }
-        });
-
         // Check whether the user has switched to "Favorite"
         ((BottomNavigationView)view.findViewById(R.id.bottomNavigationViewHome)).setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -215,17 +218,16 @@ public class Home extends Fragment {
 
                 switched_to_favorite = id==R.id.favoriteselector;
 
-                reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                reapply_adapter_with_search_params( adapter);
 
                 return true;
             }
         });
 
-        // Apply to click actions to filter chips
+        // Filtering search options below
         Chip datefilterchip =  view.findViewById(R.id.datefilterchip);
         Chip locationchip =  view.findViewById(R.id.locationchip);
         Chip lengthchip =  view.findViewById(R.id.lengthchip);
-
         FilterDialog dialogmanager = new FilterDialog(getContext(), view, new FilterDialog.Observer(){
             @Override
             public void lengthcallback(int length, String unit) {
@@ -237,7 +239,7 @@ public class Home extends Fragment {
                     lengthchip.setText("Length");
                 }
 
-                reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                reapply_adapter_with_search_params( adapter);
             }
 
             @Override
@@ -249,7 +251,7 @@ public class Home extends Fragment {
                     locationchip.setText("Location");
                 }
 
-                reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                reapply_adapter_with_search_params( adapter);
             }
 
             @Override
@@ -262,10 +264,9 @@ public class Home extends Fragment {
                 }else{
                     datefilterchip.setText("Date");
                 }
-                reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                reapply_adapter_with_search_params( adapter);
             }
         });
-
         datefilterchip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -274,7 +275,7 @@ public class Home extends Fragment {
                     public void none() {
                        search_date_long = 0;
                        search_date = "";
-                       reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                       reapply_adapter_with_search_params( adapter);
                     }
 
                     @Override
@@ -285,7 +286,6 @@ public class Home extends Fragment {
 
             }
         });
-
         locationchip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -293,7 +293,7 @@ public class Home extends Fragment {
                     @Override
                     public void none() {
                         search_location = "";
-                        reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                        reapply_adapter_with_search_params( adapter);
                     }
 
                     @Override
@@ -303,7 +303,6 @@ public class Home extends Fragment {
                 }, !search_location.equals("") );
             }
         });
-
         lengthchip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -312,7 +311,7 @@ public class Home extends Fragment {
                     public void none() {
                         search_length = 0;
                         search_unit = "";
-                        reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                        reapply_adapter_with_search_params( adapter);
                     }
 
                     @Override
@@ -323,10 +322,11 @@ public class Home extends Fragment {
             }
         });
 
-        // Apply search detection
+        // Searching below
         View original_home_bar = view.findViewById(R.id.topbarcommonlayout);
         View search_bar = view.findViewById(R.id.searchsection);
         EditText searchbox = view.findViewById(R.id.searchbox);
+        recognizer = new SpeechRecognizer(getActivity());
         searchbox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -341,10 +341,9 @@ public class Home extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 search_name = charSequence.toString().trim();
-                reapply_adapter_with_search_params(list_of_hike_view, adapter);
+                reapply_adapter_with_search_params(adapter);
             }
         });
-
         view.findViewById(R.id.closesearch).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -359,7 +358,6 @@ public class Home extends Fragment {
                 is_search_on = false;
             }
         });
-
         view.findViewById(R.id.searchicon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -374,6 +372,19 @@ public class Home extends Fragment {
                 }
 
                 is_search_on = !is_search_on;
+            }
+        });
+        view.findViewById(R.id.voiceicon).setOnClickListener(new View.OnClickListener() {
+            // Search with voice if possible
+            @Override
+            public void onClick(View view) {
+
+
+//                try {
+//                    startActivityForResult(recognizer.recognizerIntent, 100);
+//                } catch (ActivityNotFoundException e) {
+//                    Log.d("debug", "WAD");
+//                }
             }
         });
 

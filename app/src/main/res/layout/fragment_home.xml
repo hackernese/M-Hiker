@@ -5,6 +5,10 @@
     android:id="@+id/dashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbarThumbHorizontal="@android:color/transparent"
+    android:scrollbarThumbVertical="@android:color/transparent"
+    android:scrollbarTrackHorizontal="@android:color/transparent"
+    android:scrollbarTrackVertical="@android:color/transparent"
     tools:context=".Home.Home">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +55,7 @@
             android:id="@+id/bottomnavigationLonghold"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -589,10 +593,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout2"
+        android:id="@+id/listview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.63"
@@ -606,6 +610,39 @@
             android:visibility="visible" />
 
     </RelativeLayout>
+
+    <GridView
+        android:id="@+id/hikecardgrid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:fadeScrollbars="false"
+        android:fastScrollEnabled="false"
+        android:foregroundTint="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="1"
+        android:scrollbarSize="0dp"
+        android:scrollbarThumbHorizontal="@android:color/transparent"
+        android:smoothScrollbar="true"
+        android:verticalSpacing="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overlaytop" />
+
+    <GridView
+        android:id="@+id/hugecard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overlaytop"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

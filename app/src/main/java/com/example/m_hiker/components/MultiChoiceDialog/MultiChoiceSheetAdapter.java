@@ -1,20 +1,17 @@
 package com.example.m_hiker.components.MultiChoiceDialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.example.m_hiker.MultiChoiceBottomSheet.MultiChoiceSheet;
 import com.example.m_hiker.R;
-import com.example.m_hiker.components.HikesCard.HikeCardViewHolder;
+
 import android.view.View;
-import com.example.m_hiker.components.MultiChoiceDialog.Choice;
 
 public class MultiChoiceSheetAdapter extends  RecyclerView.Adapter<Choice>{
 

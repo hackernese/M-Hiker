@@ -1,7 +1,5 @@
-package com.example.m_hiker.components.HikesCard;
+package com.example.m_hiker.Home.HikesCard;
 
-import android.media.Image;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,22 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.Hikes;
 
-import org.w3c.dom.Text;
-
 public class HikeCardViewHolder extends RecyclerView.ViewHolder {
 
-    TextView location;
-    View self;
-    TextView title;
-    TextView description;
-    ImageView favorite;
+    public TextView location;
+    public View self;
+    public TextView title;
+    public TextView description;
+    public ImageView favorite;
 
     public Hikes obj;
 
-    Button navigatetohike;
+    public Button navigatetohike;
 
-    ImageView unselected;
-    ImageView fullselected;
+    public ImageView unselected;
+    public ImageView fullselected;
 
     public boolean isselected = false;
 

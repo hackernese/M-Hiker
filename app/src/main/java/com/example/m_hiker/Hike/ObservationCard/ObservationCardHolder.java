@@ -62,28 +62,7 @@ public class ObservationCardHolder extends RecyclerView.ViewHolder {
         obpager = itemView.findViewById(R.id.observationpager);
         category = itemView.findViewById(R.id.categoryobcard);
         title = itemView.findViewById(R.id.titleobcard);
-        bookmark = itemView.findViewById(R.id.bookmarkempty);
-        bookmarkselected = itemView.findViewById(R.id.bookmarkfull);
 
-
-        // Un- Bookmark this observation as the default for the Hike
-        bookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bookmarkselected.setVisibility(View.VISIBLE);
-                bookmark.setVisibility(View.GONE);
-
-            }
-        });
-
-        // Bookmark this observation as the default for the Hike
-        bookmarkselected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bookmarkselected.setVisibility(View.GONE);
-                bookmark.setVisibility(View.VISIBLE);
-            }
-        });
 
         itemView.findViewById(R.id.obcardback).setOnClickListener(new View.OnClickListener() {
             @Override
