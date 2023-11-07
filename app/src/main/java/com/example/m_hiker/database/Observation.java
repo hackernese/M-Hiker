@@ -101,6 +101,7 @@ public class Observation implements CommonTable {
                 "path",
                 "highlight",
                 "observeid",
+                "created"
         };
 
 
@@ -118,11 +119,13 @@ public class Observation implements CommonTable {
             String path = cursor.getString(cursor.getColumnIndexOrThrow("path"));
             int highlight = cursor.getInt(cursor.getColumnIndexOrThrow("highlight"));
             int observeid = cursor.getInt(cursor.getColumnIndexOrThrow("observeid"));
+            String date = cursor.getString(cursor.getColumnIndexOrThrow("created"));
 
             ObservationMedia temp = new ObservationMedia(
                     observeid, path, highlight == 1 ? true : false
             );
             temp.id = id;
+            temp.created = date;
             ret.add(temp);
         }
 

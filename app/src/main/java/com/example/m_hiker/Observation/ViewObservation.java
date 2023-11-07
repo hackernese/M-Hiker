@@ -3,22 +3,36 @@ package com.example.m_hiker.Observation;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.m_hiker.CreateObservation.ImageGrid.ImageItem;
 import com.example.m_hiker.Dialogs.DeleteWarning;
 import com.example.m_hiker.R;
 import com.example.m_hiker.components.SocialMedia;
 import com.example.m_hiker.database.Observation;
 
-import org.w3c.dom.Text;
+import java.io.File;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +98,8 @@ public class ViewObservation extends Fragment {
 
         Bundle bundle = getArguments();
         Observation ob = ((Observation.ParcelObservation)bundle.getParcelable("object")).object;
+        RecyclerView grid = view.findViewById(R.id.medialist);
+        View overlay = view.findViewById(R.id.overlaytop123213213);
 
         describeob = view.findViewById(R.id.describeob);
         timeob = view.findViewById(R.id.timeob);
@@ -92,6 +108,7 @@ public class ViewObservation extends Fragment {
         category = view.findViewById(R.id.categoryob);
         title = view.findViewById(R.id.titleob);
 
+        // Setting name, location and text for the view here
         title.setText(ob.title);
         timeob.setText(ob.time);
         dateob.setText(ob.date);
@@ -99,9 +116,34 @@ public class ViewObservation extends Fragment {
         category.setText(ob.category);
         weather.setText(ob.weather.trim().length()==0 ? "Unknown" : ob.weather.trim());
 
+        // Setting up the RecyclerView and its adapter
+        ObservationMediaAdapter adapter = new ObservationMediaAdapter(getContext(), ob.getmedias());
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        grid.setLayoutManager(manager);
+        grid.setAdapter(adapter);
+        Animation fadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+        Animation fadeOut = AnimationUtils.loadAnimation(getContext(), R.anim.fadeout);
 
+        grid.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-        view.findViewById(R.id.sharebtnob).setOnClickListener(new View.OnClickListener() {
+                // Check if the first completely visible item is at position 0
+                int[] firstVisibleItemPositions = manager.findFirstCompletelyVisibleItemPositions(null);
+                if (firstVisibleItemPositions.length > 0 && firstVisibleItemPositions[0] == 0) {
+                    // RecyclerView is scrolled to the top
+                    // Your code here
+                    overlay.startAnimation(fadeOut);
+                    overlay.setVisibility(View.INVISIBLE);
+                }else{
+                    if(overlay.getVisibility()!=View.VISIBLE)
+                        overlay.startAnimation(fadeIn);
+                    overlay.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        view.findViewById(R.id.sharebtnob).setOnClickListener(new View.OnClickListener()     {
             @Override
             public void onClick(View view) {
                 new SocialMedia(getContext(), view);

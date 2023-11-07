@@ -57,8 +57,8 @@ public class ObservationMedia implements CommonTable{
 
     // Foriegn key to an observation
     public int observation_id;
-    String created;
-    String modified;
+    public String created;
+    public String modified;
 
     public Uri toUri(){
         Log.d("debug", this.path);

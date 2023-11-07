@@ -9,6 +9,19 @@
     tools:context=".Observation.ViewObservation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/overlaytop123213213"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:background="@drawable/shadow_1_top"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout15">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -237,11 +250,13 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
             android:ellipsize="end"
             android:fontFamily="@font/noto_sans"
             android:maxLines="7"
             android:text="Generating random paragraphs can be an excellent way for writers to get their creative flow going at the beginning of the day. The writer has no idea what topic the random paragraph will be about when it appears. This forces the writer to use creativity to complete one of three common writing challenges. The writer can use the paragraph as the first one of a short story and build upon it. A second option is to use the random paragraph somewhere in a short story they create. The third option is to have the random paragraph be the ending paragraph in a short story. No matter which of these challenges is undertaken, the writer is forced to use creativity to incorporate the paragraph into their writing."
             android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -249,33 +264,20 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.gridlayout.widget.GridLayout
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="2dp"
-        android:paddingStart="24dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="24dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout15" >
+        app:layout_constraintTop_toBottomOf="@+id/overlaytop123213213">
 
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/emptyimage"
-            app:layout_column="0"
-            app:layout_row="0" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/medialist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="250dp"
-            android:layout_height="290dp"
-            android:src="@drawable/emptyimage"
-            app:layout_column="1"
-            app:layout_row="1" />
-    </androidx.gridlayout.widget.GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,31 +1,19 @@
 package com.example.m_hiker.Home;
 
 import static android.app.Activity.RESULT_OK;
-
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Handler;
-import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -40,11 +28,6 @@ import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-
-import com.example.m_hiker.Home.BigCard.BigCardAdapter;
-import com.example.m_hiker.Home.Cards.BigCard;
-import com.example.m_hiker.Home.Cards.Common;
-import com.example.m_hiker.Home.Cards.ListCard;
 import com.example.m_hiker.R;
 import com.example.m_hiker.Home.HikesCard.HikeCardAdapter;
 import com.example.m_hiker.database.DatabaseMHike;
@@ -52,8 +35,6 @@ import com.example.m_hiker.database.Hikes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -162,15 +143,6 @@ public class Home extends Fragment {
 
         return ret;
     }
-    GridCardAdapter adapter;
-
-//    private ArrayList<Common> craftcards(ArrayList<Hikes> hikes){
-//        ArrayList<Common> ret = new ArrayList<>();
-//        for(Hikes item : hikes){
-//            Common obj = new ListCard(item, adapter);
-//        }
-//        return ret;
-//    }
 
     private RecyclerView list_of_hike_view;
     View original_home_bar;

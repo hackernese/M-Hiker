@@ -1,28 +1,15 @@
 package com.example.m_hiker;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavGraph;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 
-import com.example.m_hiker.Dialogs.SocialMedia;
+import com.example.m_hiker.Dialogs.MediaPlayer.MediaSlider;
 import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.utils.storex;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.io.File;
 
@@ -46,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 //        intent.setType("image/* video/*");
 //        startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
-
 
         // Creating media folder
         storex.apikey = getApiKeyFromManifest();
@@ -75,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // Enabling Places API
 //        Places.initialize(getApplicationContext(), storex.apikey);
 //        PlacesClient placeclient = Places.createClient(this);
+
     }
 
     private String getApiKeyFromManifest() {
