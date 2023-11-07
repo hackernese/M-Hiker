@@ -3,6 +3,7 @@ package com.example.m_hiker.Home;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyboardShortcutGroup;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,8 +21,10 @@ import androidx.navigation.Navigation;
 
 import com.example.m_hiker.Dialogs.DeleteWarning;
 import com.example.m_hiker.Dialogs.ToastMessage;
+import com.example.m_hiker.Home.Cards.BigCard;
 import com.example.m_hiker.Home.Cards.Common;
 import com.example.m_hiker.Home.Cards.ListCard;
+import com.example.m_hiker.Home.Cards.Test;
 import com.example.m_hiker.Home.HikesCard.HikeCardAdapter;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
@@ -30,6 +34,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class GridCardAdapter extends BaseAdapter {
     @Override
@@ -44,7 +49,7 @@ public class GridCardAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
 
@@ -73,7 +78,10 @@ public class GridCardAdapter extends BaseAdapter {
 
     public DatabaseMHike db;
 
+    public GridCardAdapter self = this;
+
     View parentView;
+    GridView grid;
 
     private void checkSelect(long count){
         itemselected.setText(count + " items selected");
@@ -88,11 +96,16 @@ public class GridCardAdapter extends BaseAdapter {
             closebtn.callOnClick();
     }
 
-    public GridCardAdapter(Context context, ArrayList<Hikes> items, View parentView, FragmentManager manager){
+    private int index;
+
+    public GridCardAdapter(Context context, ArrayList<Hikes> items, View parentView, FragmentManager manager, GridView grid){
         this.items = items;
         this.context = context;
         this.allcards = new ArrayList<>();
         this.parentView = parentView;
+        this.grid = grid;
+        this.index = 0;
+
 
         // Grabbing database instance
         db = DatabaseMHike.init(context);
@@ -133,21 +146,21 @@ public class GridCardAdapter extends BaseAdapter {
 
                 // Reading the currently selected object and redirect to its edit page
 
-//                Hikes o = holderlist.stream().filter(obj->obj.isselected).findFirst().get().obj;
-//                Hikes.ParcelHike hike = o.getParcelObject(); // Extract the parcel object
-//
-//                // Passing the object
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("hike", hike);
-//
-//                // Redirect
-//                Navigation.findNavController(parentView).navigate(R.id.action_homepage_to_editHike, bundle);
+                Hikes o = allcards.stream().filter(obj->obj.is_selected).findFirst().get().item;
+                Hikes.ParcelHike hike = o.getParcelObject(); // Extract the parcel object
+
+                // Passing the object
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("hike", hike);
+
+                // Redirect
+                Navigation.findNavController(parentView).navigate(R.id.action_homepage_to_editHike, bundle);
             }
         });
         parentView.findViewById(R.id.openbuttonhike).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigate_to_hike(holderlist.stream().filter(obj->obj.isselected).findFirst().get().position);
+                navigate_to_hike(allcards.stream().filter(obj->obj.is_selected).findFirst().get().item);
             }
         });
         parentView.findViewById(R.id.deletebtnhike).setOnClickListener(new View.OnClickListener() {
@@ -162,11 +175,14 @@ public class GridCardAdapter extends BaseAdapter {
 
                     @Override
                     public void agree() {
-//                        holderlist.stream().filter(obj->obj.isselected).forEach(obj ->{
-//                            obj.obj.delete();
-//                        });
+                        allcards.stream().filter(obj->obj.is_selected).forEach(obj ->{
+                            items.remove(obj.item);
+                            obj.item.delete();
+                            grid.setAdapter(self);
+                        });
 //                        callback.onchange();
                         ToastMessage.success(parentView, "Successfully deleted selected items");
+                        closebtn.callOnClick();
                     }
                 });
                 dialog.show(manager, "delete hike");
@@ -191,12 +207,14 @@ public class GridCardAdapter extends BaseAdapter {
                 bottommenu.startAnimation(slideup);
             }
         });
+
+        Log.d("debug", "Finished GridCardAdapter");
+
     }
 
-    private int state = 1;// 1 = normal, 2 = grid, 3 = huge grid
+    public int state = 1;// 1 = normal, 2 = grid, 3 = huge grid
     private boolean selectmode = false;
 
-    public ArrayList<Common> allcards;
     public void setnewitems(ArrayList<Hikes> hikes){
         this.items = hikes;
         this.notifyDataSetChanged();
@@ -214,48 +232,60 @@ public class GridCardAdapter extends BaseAdapter {
             Log.e("e", e.toString());
         }
     }
+    public List<Test> allcards;
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        if (inflater == null)
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if(view==null) {
+            view = inflater.inflate(R.layout.hike_card, null);
+        }
 
         Hikes item = items.get(i);
-        Common card = state==1 ? new ListCard(item, this) :
-                state==2 ?  new ListCard(item, this)  :
-                        new ListCard(item, this);
 
-        // Setting callback for each view
-        card.setCallback(new Common.Callback() {
+        Test obj = (new Test(view, item));
+        if(allcards.stream().filter(o->o.item.id==item.id).count() == 0){
+            allcards.add(obj);
+            Log.d("debug", "object with id " + item.id + " has not existed, adding");
+        }
+
+
+
+        obj.setCallback(new Test.Callback(){
             @Override
-            public void OnLongClick(GridCardAdapter parent, Common child) {
+            public void OnLongClick(Test child) {
 
-                if(selectmode)
-                    return;
-
-                selectmode = true;
-
-                allcards.forEach((c)->{
-                    c.unselect();
+                allcards.forEach(o->{
+                    Log.d("debug", o.title.getText().toString());
                 });
-                child.select();
-
-                selectbar.setVisibility(View.VISIBLE);
-                topsearchbar.setVisibility(View.GONE);
-                topbar.setVisibility(View.GONE);
-                Fab.setVisibility(View.GONE);
-                bottommenu.setVisibility(View.GONE);
-                longholdmenu.setVisibility(View.VISIBLE);
-                longholdmenu.startAnimation(slideup);
-
-                long count = allcards.stream().filter(obj -> obj.is_selected).count();
-                checkSelect(count);
+//                if(selectmode)
+//                    return;
+//
+//                selectmode = true;
+//                allcards.forEach((c)->{
+//                    c.unselect();
+//                });
+//                child.select();
+//                Log.d("debug", "CHild = " + child.item.name);
+//
+//                selectbar.setVisibility(View.VISIBLE);
+//                topsearchbar.setVisibility(View.GONE);
+//                topbar.setVisibility(View.GONE);
+//                Fab.setVisibility(View.GONE);
+//                bottommenu.setVisibility(View.GONE);
+//                longholdmenu.setVisibility(View.VISIBLE);
+//                longholdmenu.startAnimation(slideup);
+//
+//                long count = allcards.stream().filter(obj -> obj.is_selected).count();
+//                checkSelect(count);
 
             }
 
             @Override
-            public void OnClick(GridCardAdapter parent, Common child) {
+            public void OnClick(Test child) {
 
                 if(selectmode){
                     if(child.is_selected)
@@ -272,7 +302,7 @@ public class GridCardAdapter extends BaseAdapter {
             }
 
             @Override
-            public void OnLove(GridCardAdapter parent, Common child) {
+            public void OnLove( Test child) {
                 HashMap<String, String> values = new HashMap<String, String>();
                 values.put("islove", item.islove ? "0" : "1");
 
@@ -283,20 +313,98 @@ public class GridCardAdapter extends BaseAdapter {
                     // Success
                     item.islove = !item.islove;
                     if(item.islove){
-                        card.favorite.setImageResource(R.drawable.favorite);
+                        obj.favorite.setImageResource(R.drawable.favorite);
                     }else{
-                        card.favorite.setImageResource(R.drawable.heart);
+                        obj.favorite.setImageResource(R.drawable.heart);
                     }
                 }
             }
         });
 
-        // caching back he views
-        if(view==null) {
-            view = card.getView();
-            allcards.add(card);
-        }
-
         return view;
+
+
+
+//        if(track==items.size()-1){
+//            return view;
+//        }else{
+//            track = i;
+//        }
+//
+//        Hikes item = items.get(i);
+//        Common card;
+//
+//        card = state==1 ? new ListCard(item, this) :
+//                state==2 ?  new BigCard(item, this)  :
+//                        new ListCard(item, this);
+//        // Setting callback for each view
+//        card.setCallback(new Common.Callback() {
+//            @Override
+//            public void OnLongClick(GridCardAdapter parent, Common child) {
+//
+//                if(selectmode)
+//                    return;
+//
+//                selectmode = true;
+//
+//                allcards.forEach((c)->{
+//                    c.unselect();
+//                });
+//                child.select();
+//                Log.d("debug", "CHild = " + child.item.name);
+//
+//                selectbar.setVisibility(View.VISIBLE);
+//                topsearchbar.setVisibility(View.GONE);
+//                topbar.setVisibility(View.GONE);
+//                Fab.setVisibility(View.GONE);
+//                bottommenu.setVisibility(View.GONE);
+//                longholdmenu.setVisibility(View.VISIBLE);
+//                longholdmenu.startAnimation(slideup);
+//
+//                long count = allcards.stream().filter(obj -> obj.is_selected).count();
+//                checkSelect(count);
+//
+//            }
+//
+//            @Override
+//            public void OnClick(GridCardAdapter parent, Common child) {
+//
+//                if(selectmode){
+//                    if(child.is_selected)
+//                        child.unselect();
+//                    else
+//                        child.select();
+//
+//                    long count = allcards.stream().filter(obj -> obj.is_selected).count();
+//                    checkSelect(count);
+//                    return;
+//                }
+//
+//                navigate_to_hike(child.item);
+//            }
+//
+//            @Override
+//            public void OnLove(GridCardAdapter parent, Common child) {
+//                HashMap<String, String> values = new HashMap<String, String>();
+//                values.put("islove", item.islove ? "0" : "1");
+//
+//                int affected = db.update(item, values);
+//                Log.d("debug", "Updated rows : " + affected);
+//
+//                if(affected > 0){
+//                    // Success
+//                    item.islove = !item.islove;
+//                    if(item.islove){
+//                        card.favorite.setImageResource(R.drawable.favorite);
+//                    }else{
+//                        card.favorite.setImageResource(R.drawable.heart);
+//                    }
+//                }
+//            }
+//        });
+//        allcards.add(card);
+//        view = card.getView();
+//
+//        return view;
     }
 }

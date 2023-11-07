@@ -1,6 +1,7 @@
 package com.example.m_hiker.Home.Cards;
 
 import android.content.Context;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,8 @@ import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Hikes;
 
-public class Common {
+public class Test {
+
     public View view;
     public LayoutInflater inflater;
     public Context context;
@@ -31,20 +33,22 @@ public class Common {
     public Callback callback;
 
     public static  interface  Callback{
-        void OnLongClick(GridCardAdapter parent, Common child);
-        void OnClick(GridCardAdapter parent, Common child);
-        void OnLove(GridCardAdapter parent, Common child);
+        void OnLongClick( Test child);
+        void OnClick(Test child);
+        void OnLove(Test child);
     }
-
     public boolean is_selected = false;
 
-    public void setCallback(Callback callback){};
+    public void setCallback(Callback callback){
+        this.callback = callback;
+    };
     public void select(){
         unselected.setVisibility(View.GONE);
         selected.setVisibility(View.VISIBLE);
         favorite.setVisibility(View.GONE);
         is_selected = true;
     };
+    public Test self;
     public void unselect(){
         unselected.setVisibility(View.VISIBLE);
         selected.setVisibility(View.GONE);
@@ -58,22 +62,46 @@ public class Common {
         is_selected = false;
     };
 
-    public Hikes item;
-    public Common self;
 
-    public Common(Hikes item, GridCardAdapter adapter) {
-        this.inflater = adapter.inflater;
-        this.context = adapter.context;
+
+    public Hikes item;
+    public Test(View view, Hikes item) {
         this.db = DatabaseMHike.init(context);
-        this.parentadapter = adapter;
         this.item = item;
+
+        title = view.findViewById(R.id.hike_card_title);
+        country = view.findViewById(R.id.location);
+        describe = view.findViewById(R.id.bio);
+        favorite = view.findViewById(R.id.lovethishike);
+        navigatehike = view.findViewById(R.id.navigatortohikebtn);
+        thumbnail = view.findViewById(R.id.thumbnailcard);
+        selected = view.findViewById(R.id.fullselected);
+        unselected = view.findViewById(R.id.unselected);
         this.self = this;
 
+        // Click listeners below
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.OnLove(self);
+            }
+        });
+        navigatehike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.OnClick(self);
+            }
+        });
+        navigatehike.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                callback.OnLongClick(self);
 
-    }
+                favorite.setVisibility(View.GONE);
 
-    public View getView(){
-
+                return true;
+            }
+        });
         title.setText(item.name);
         country.setText(item.location);
         describe.setText(item.description);
@@ -83,6 +111,6 @@ public class Common {
         }else{
             favorite.setImageResource(R.drawable.heart);
         }
-        return view;
     }
+
 }

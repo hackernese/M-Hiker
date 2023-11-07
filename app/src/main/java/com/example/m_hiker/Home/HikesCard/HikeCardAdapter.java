@@ -19,6 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.m_hiker.Dialogs.DeleteWarning;
 import com.example.m_hiker.Dialogs.ToastMessage;
+import com.example.m_hiker.Home.HikesCard.cards.BigCard;
+import com.example.m_hiker.Home.HikesCard.cards.CardHolder;
+import com.example.m_hiker.Home.HikesCard.cards.ListCard;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Hikes;
@@ -29,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
+public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
 
     Context context;
     public ArrayList<Hikes> items;
@@ -52,16 +55,33 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
     private List<Hikes> totalselected = new ArrayList<>();
 
 
+    public int state = 0; // 0 = list, 1 = grid, 2 = big grid
+
     @NonNull
     @Override
-    public HikeCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        inflated_view = LayoutInflater.from(context).inflate(R.layout.hike_card, parent, false);
-        return new HikeCardViewHolder(inflated_view);
+    public CardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        Log.d("debug", "RAWD");
+
+        CardHolder holder;
+
+        if(state==0){
+            inflated_view = LayoutInflater.from(context).inflate(R.layout.hike_card, parent, false);
+            holder = new ListCard(inflated_view);
+        }else if(state==1){
+            inflated_view = LayoutInflater.from(context).inflate(R.layout.bigcarditem, parent, false);
+            holder = new BigCard(inflated_view);
+        }else{
+            inflated_view = LayoutInflater.from(context).inflate(R.layout.bigcarditem, parent, false);
+            holder = new ListCard(inflated_view);
+        }
+
+        return holder;
     }
 
     private List<Integer> selected = new ArrayList<>();
 
-    public List<HikeCardViewHolder> holderlist = new ArrayList<>();
+    public List<CardHolder> holderlist = new ArrayList<>();
 
     private boolean inselectedmode = false;
 
@@ -84,6 +104,8 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
     private void checkbiggerthan1select(){
 
         long itemscount = holderlist.stream().filter(obj -> obj.isselected).count();
+        itemselected.setText(itemscount + " items selected");
+
 
         if(itemscount > 1){
 
@@ -132,9 +154,10 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
         }
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull HikeCardViewHolder holder, int position) {
+    TextView itemselected;
 
+    @Override
+    public void onBindViewHolder(@NonNull CardHolder holder, int position) {
         holderlist.add(holder);
 
         Hikes item = items.get(position);
@@ -203,7 +226,7 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
         FloatingActionButton Fab = (FloatingActionButton)parentView.findViewById(R.id.addhikebtn);
         BottomNavigationView bottommenu = parentView.findViewById(R.id.bottomNavigationViewHome);
         View longholdmenu = parentView.findViewById(R.id.bottomnavigationLonghold);
-        TextView itemselected = parentView.findViewById(R.id.itemstext);
+        itemselected = parentView.findViewById(R.id.itemstext);
         View selectallpanel = parentView.findViewById(R.id.selectallpanel);
         Button selectallbutton = parentView.findViewById(R.id.selectall);
         ImageView selecticon = parentView.findViewById(R.id.selecticon);
@@ -215,7 +238,7 @@ public class HikeCardAdapter extends RecyclerView.Adapter<HikeCardViewHolder>{
             public void onClick(View view) {
                 isselectedall = !isselectedall;
                 holderlist.forEach((c)->{
-                    c.showcheckedmark(isselectedall).showunchecked(!isselectedall);
+                    c.showfavorite(false).showcheckedmark(true);
                 });
                 selecticon.setImageResource(isselectedall ? R.drawable.select_check_box_fill0_wght400_grad0_opsz24
                         : R.drawable.baseline_crop_square_24

@@ -18,6 +18,8 @@ public class storex extends AppCompatActivity {
     public static String folder;
     public static File folderFile;
 
+    public static String abpath;
+
 
     public static void setmainActivity(MainActivity activity, FragmentManager manager){
         storex.activity = activity;

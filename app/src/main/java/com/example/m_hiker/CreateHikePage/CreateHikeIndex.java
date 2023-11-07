@@ -24,6 +24,7 @@ import com.example.m_hiker.CreateHikePage.screens.HikeRunnable;
 import com.example.m_hiker.CreateHikePage.screens.LengthAndDifficulty;
 import com.example.m_hiker.CreateHikePage.screens.LocationPage;
 import com.example.m_hiker.CreateHikePage.screens.NamePage;
+import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Hikes;
@@ -233,6 +234,17 @@ public class CreateHikeIndex extends Fragment {
                         showtoasterror("Difficulty cannot be empty");
                         return;
                     }
+
+                    // Create a new hike
+                    Hikes new_hike = new Hikes(
+                            new_name, new_location, new_date, new_length, new_unit, new_difficulty, isparking,
+                            new_description, false, "", new_companions, 0, 0
+                    );
+
+                    db.insert(new_hike);
+                    Navigation.findNavController(view).navigate(R.id.action_createNewHike_to_homepage);
+                    ToastMessage.success(view, "Successfully insert new record");
+
                 }else{
                     // Go next
                     viewpager.setCurrentItem(viewpager.getCurrentItem()+1, true);

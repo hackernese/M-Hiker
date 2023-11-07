@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.example.m_hiker.MultiChoiceBottomSheet.MultiChoiceSheet;
 import com.example.m_hiker.R;
 
 /**
@@ -68,12 +70,12 @@ public class LengthAndDifficulty extends Fragment {
         return this;
     }
 
-    private String unit;
-    private String difficulty;
-    private String description;
-    private int companions;
-    private int length;
-    private boolean switched;
+    private String unit ="";
+    private String difficulty = "";
+    private String description = "";
+    private int companions = 0;
+    private int length = 0;
+    private boolean switched = false;
 
     private void invoke(){
         callback.extra(length,unit,description,switched,companions, difficulty);
@@ -89,20 +91,73 @@ public class LengthAndDifficulty extends Fragment {
 
         EditText lengthbox = ((EditText)view.findViewById(R.id.length));
 
-        ((EditText)view.findViewById(R.id.unitbox)).addTextChangedListener(new TextWatcher() {
+        EditText difficultbox = view.findViewById(R.id.difficultybox);
+        EditText unitbox = view.findViewById(R.id.unitbox);
+
+        Runnable call = new Runnable() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void run() {
+                try{
+                    callback.extra(
+                            length,
+                            unit,
+                            description,
+                            switched,
+                            companions,
+                            difficulty
+                    );
+                }catch (Exception e){
+                    Log.d("debug", e.toString());
+                }
 
             }
+        };
 
+        view.findViewById(R.id.difficultybtn).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                unit = charSequence.toString().trim();
+            public void onClick(View view) {
+                com.example.m_hiker.MultiChoiceBottomSheet.MultiChoiceSheet sheet = new MultiChoiceSheet(view, getActivity(), "Units");
+                sheet
+                        .option("Easy")
+                        .option("Intermediate")
+                        .option("Hard");
+                sheet.show(new MultiChoiceSheet.Callback() {
+                    @Override
+                    public void onchange(String key, boolean value) {
+                        if(value){
+                            difficulty = key.trim().toLowerCase();
+                            difficultbox.setText(difficulty);
+                            call.run();
+                        }
+
+                    }
+                });
             }
+        });
 
+        view.findViewById(R.id.unitbtn).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void onClick(View view) {
 
+                com.example.m_hiker.MultiChoiceBottomSheet.MultiChoiceSheet sheet = new MultiChoiceSheet(view, getActivity(), "Units");
+                sheet
+                        .option("Kilometers")
+                        .option("Miles")
+                        .option("Meters");
+                sheet.show(new MultiChoiceSheet.Callback() {
+                    @Override
+                    public void onchange(String key, boolean value) {
+                        String unittext = key.equals("Kilometers") ? "km" :
+                                key.equals("Miles") ? "mile" : "m";
+
+                        if(value){
+                            unit = unittext;
+                            unitbox.setText(unittext);
+                            call.run();
+                        }
+
+                    }
+                });
             }
         });
         lengthbox.addTextChangedListener(new TextWatcher() {
@@ -115,29 +170,16 @@ public class LengthAndDifficulty extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 try {
                     int temp = Integer.parseInt(charSequence.toString().trim());
-                    if(temp > 0)
+                    if(temp > 0) {
                         length = temp;
-                    else
+                        call.run();
+
+                    }else
+
                         lengthbox.setText("");
                 }catch (NumberFormatException e){
                     lengthbox.setText("");
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        ((EditText)view.findViewById(R.id.difficultybox)).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                difficulty = charSequence.toString().trim();
             }
 
             @Override
@@ -154,6 +196,7 @@ public class LengthAndDifficulty extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 description = charSequence.toString().trim();
+                call.run();
             }
 
             @Override
@@ -170,6 +213,7 @@ public class LengthAndDifficulty extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 companions = Integer.parseInt(charSequence.toString().trim());
+                call.run();
             }
 
             @Override
@@ -184,6 +228,7 @@ public class LengthAndDifficulty extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 switched = b;
+                call.run();
             }
         });
 

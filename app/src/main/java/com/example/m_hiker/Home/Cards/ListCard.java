@@ -30,7 +30,6 @@ public class ListCard extends Common {
         selected = view.findViewById(R.id.fullselected);
         unselected = view.findViewById(R.id.unselected);
 
-
         // Click listeners below
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,10 +58,6 @@ public class ListCard extends Common {
 
     @Override
     public View getView() {
-
-        Log.d("debug", "DAWDAWD");
-
-
         return super.getView();
     }
 }

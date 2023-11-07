@@ -16,12 +16,34 @@
         android:layout_width="0dp"
         android:layout_height="10dp"
         android:background="@drawable/shadow_1_top"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topbarsection">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <GridView
+        android:id="@+id/hikecardgrid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="false"
+        android:fadeScrollbars="false"
+        android:fastScrollEnabled="false"
+        android:foregroundTint="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:scrollbarSize="0dp"
+        android:smoothScrollbar="false"
+        android:verticalSpacing="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overlaytop">
+
+    </GridView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addhikebtn"
@@ -592,57 +614,52 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
-        android:id="@+id/listview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hikelist"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overlaytop" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notfound"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.63"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/overlaytop">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listofhikes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible" />
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_do_not_disturb_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="No hikes found"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <GridView
-        android:id="@+id/hikecardgrid"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:clickable="true"
-        android:fadeScrollbars="false"
-        android:fastScrollEnabled="false"
-        android:foregroundTint="@android:color/transparent"
-        android:listSelector="@android:color/transparent"
-        android:numColumns="1"
-        android:scrollbarSize="0dp"
-        android:scrollbarThumbHorizontal="@android:color/transparent"
-        android:smoothScrollbar="true"
-        android:verticalSpacing="8dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/overlaytop" />
-
-    <GridView
-        android:id="@+id/hugecard"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/overlaytop"
-        app:layout_constraintVertical_bias="1.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -114,9 +114,23 @@
                 android:hint="Unit"
                 android:linksClickable="false"
                 android:longClickable="false" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Button
+            android:id="@+id/unitbtn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_slight_round"
+            app:layout_constraintBottom_toBottomOf="@+id/textInputLayout7"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout7"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout7"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout7" />
+
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout21"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -178,7 +192,20 @@
                 android:hint="Difficulty"
                 android:linksClickable="false"
                 android:longClickable="false" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/difficultybtn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_slight_round"
+            app:layout_constraintBottom_toBottomOf="@+id/textInputLayout10"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout10"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout10"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout10" />
 
         <ImageView
             android:id="@+id/imageView27"

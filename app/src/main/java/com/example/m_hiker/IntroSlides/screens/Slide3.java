@@ -3,12 +3,17 @@ package com.example.m_hiker.IntroSlides.screens;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.m_hiker.R;
+import com.example.m_hiker.utils.storex;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +66,23 @@ public class Slide3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_slide3, container, false);
+        View view = inflater.inflate(R.layout.fragment_slide3, container, false);
+
+        view.findViewById(R.id.getstarted).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = new File(storex.abpath + "initdone");
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
+                        Navigation.findNavController(view).navigate(R.id.action_introSlides_to_homepage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        return view;
     }
 }

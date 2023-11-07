@@ -84,7 +84,26 @@ public class IntroSlides extends Fragment {
         IntroViewPager2Adapter adapter = new IntroViewPager2Adapter(this, fragments);
         viewpager.setAdapter(adapter);
 
+        // Actions
+        view.findViewById(R.id.prevslide).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int item = viewpager.getCurrentItem();
+                if(item==0)
+                    return;
+                viewpager.setCurrentItem(item-1, true);
+            }
+        });
 
+        view.findViewById(R.id.nextslide).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int item = viewpager.getCurrentItem();
+                if(item==2)
+                    return;
+                viewpager.setCurrentItem(item+1, true);
+            }
+        });
 
 
         return view;

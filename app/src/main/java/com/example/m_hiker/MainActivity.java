@@ -2,6 +2,10 @@ package com.example.m_hiker;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -40,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
 //        startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
 
 
-
         // Creating media folder
+        storex.abpath = getFilesDir() + File.separator;
         storex.folder = getFilesDir() + File.separator + "media";
         storex.folderFile = new File(storex.folder);
 

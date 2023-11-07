@@ -187,7 +187,7 @@ public class Hikes implements CommonTable {
                 tablename,
                 projection,
                 "",  arguments,
-                null, null, ""
+                null, null, "created DESC"
         );
 
         while(cursor.moveToNext()){

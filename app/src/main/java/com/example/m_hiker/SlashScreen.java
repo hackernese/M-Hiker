@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.m_hiker.utils.storex;
+
+import java.io.File;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SlashScreen#newInstance} factory method to
@@ -55,12 +59,19 @@ public class SlashScreen extends Fragment {
         View view = inflater.inflate(R.layout.fragment_slash_screen, container, false);
         Handler handler = new Handler(Looper.getMainLooper());
 
+        File file = new File(storex.abpath + "initdone");
+
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Navigation.findNavController(view).navigate(R.id.homepage);
+                if(!file.exists()){
+                    Navigation.findNavController(view).navigate(R.id.action_slashScreen_to_introSlides);
+                }else{
+                    Navigation.findNavController(view).navigate(R.id.action_slashScreen_to_home2);
+                }
             }
-        }, 1500);
+        }, 0);
 
         return view;
     }

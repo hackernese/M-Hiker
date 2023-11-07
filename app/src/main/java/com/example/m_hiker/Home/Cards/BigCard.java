@@ -1,6 +1,7 @@
 package com.example.m_hiker.Home.Cards;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,64 +15,50 @@ import com.example.m_hiker.database.Hikes;
 
 public class BigCard extends Common{
 
-    View view;
-    LayoutInflater inflater;
-    Context context;
-    DatabaseMHike db;
-    GridCardAdapter parentadapter;
-    public Callback callback;
     @Override
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
 
-    @Override
-    public void select() {
-
-    }
-
-    @Override
-    public void unselect() {
-
-    }
-
-    @Override
-    public void stopselect() {
-
-    }
-
     public BigCard(Hikes item, GridCardAdapter adapter) {
         super(item, adapter);
-
         view = inflater.inflate(R.layout.bigcarditem, null);
-
-        TextView description = view.findViewById(R.id.describehuge); ;
-        TextView location = view.findViewById(R.id.biglocation); ;
-        TextView title = view.findViewById(R.id.titlebig); ;
-        ImageView thumbnail = view.findViewById(R.id.thumbnailbig); ;
-        ImageView unselected = view.findViewById(R.id.unselected); ;
-        ImageView selected = view.findViewById(R.id.selectedicon); ;
-        Button clickimage = view.findViewById(R.id.clickhuge); ;
-        ImageView favor = view.findViewById(R.id.unselectedheart); ;
-        ImageView unfavor = view.findViewById(R.id.favoritebig); ;
-
-        // Setting initial information for each card
-        description.setText(item.description);
-        location.setText(item.location);
-        title.setText(item.name);
-
-        // Setting actions
-        unfavor.setOnClickListener(new View.OnClickListener() {
+        title = view.findViewById(R.id.titlebig);
+        country = view.findViewById(R.id.biglocation);
+        describe = view.findViewById(R.id.describehuge);
+        favorite = view.findViewById(R.id.favoritebig);
+        navigatehike = view.findViewById(R.id.clickhuge);
+        thumbnail = view.findViewById(R.id.thumbnailbig);
+        selected = view.findViewById(R.id.selectedicon);
+        unselected = view.findViewById(R.id.unselected);
+        // Click listeners below
+        favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                callback.OnLove(adapter, self);
             }
         });
+        navigatehike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.OnClick(adapter, self);
+            }
+        });
+        navigatehike.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
 
+                callback.OnLongClick(adapter, self);
+
+                favorite.setVisibility(View.GONE);
+
+                return true;
+            }
+        });
     }
 
     @Override
     public View getView() {
-        return view;
+        return super.getView();
     }
 }

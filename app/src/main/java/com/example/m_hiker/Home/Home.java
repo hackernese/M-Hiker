@@ -1,16 +1,29 @@
 package com.example.m_hiker.Home;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultRegistry;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,11 +34,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
 import com.example.m_hiker.Home.BigCard.BigCardAdapter;
+import com.example.m_hiker.Home.Cards.BigCard;
+import com.example.m_hiker.Home.Cards.Common;
+import com.example.m_hiker.Home.Cards.ListCard;
 import com.example.m_hiker.R;
 import com.example.m_hiker.Home.HikesCard.HikeCardAdapter;
 import com.example.m_hiker.database.DatabaseMHike;
@@ -34,6 +51,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -93,9 +111,9 @@ public class Home extends Fragment {
     int search_length = 0;
     String search_unit = "";
     String search_name = "";
-
     GridView grid;
-    private void reapply_adapter_with_search_params(GridCardAdapter adapter){
+    private View notfoundview;
+    private void reapply_adapter_with_search_params(HikeCardAdapter adapter){
 
         HashMap<String, String> params = new HashMap<>();
         HashMap<String, Integer> paramsint = new HashMap<>();
@@ -118,11 +136,44 @@ public class Home extends Fragment {
             params.put("location", search_location);
 
         ArrayList<Hikes> temphikes = Hikes.query(params, paramsint);
-        adapter.setnewitems(temphikes);}
 
-    SpeechRecognizer recognizer;
+        if(temphikes.size()==0)
+            notfoundview.setVisibility(View.VISIBLE);
+        else
+            notfoundview.setVisibility(View.GONE);
 
-    private int viewstate = 1; // 1 == List, 2 == Grid big, 3 = Grid super big
+        adapter.setnewitems(temphikes);
+        list_of_hike_view.setAdapter(adapter);
+    }
+
+
+    public int viewstate = 1; // 1 == List, 2 == Grid big, 3 = Grid super big
+
+    private ArrayList<Hikes> query(){
+
+        ArrayList<Hikes> ret = Hikes.query();
+
+        if(ret.size()==0)
+            notfoundview.setVisibility(View.VISIBLE);
+        else
+            notfoundview.setVisibility(View.GONE);
+
+        return ret;
+    }
+    GridCardAdapter adapter;
+
+//    private ArrayList<Common> craftcards(ArrayList<Hikes> hikes){
+//        ArrayList<Common> ret = new ArrayList<>();
+//        for(Hikes item : hikes){
+//            Common obj = new ListCard(item, adapter);
+//        }
+//        return ret;
+//    }
+
+    private RecyclerView list_of_hike_view;
+    View original_home_bar;
+    View search_bar;
+    EditText searchbox;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,6 +183,8 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         grid = view.findViewById(R.id.hikecardgrid);
+        notfoundview = view.findViewById(R.id.notfound);
+        list_of_hike_view = view.findViewById(R.id.hikelist);
 
         // Add new hike button
         view.findViewById(R.id.addhikebtn).setOnClickListener(new View.OnClickListener(){
@@ -142,36 +195,33 @@ public class Home extends Fragment {
             }
         });
 
-        // Grabbing the bottom view
-        RecyclerView list_of_hike_view = view.findViewById(R.id.listofhikes);
-        list_of_hike_view.setLayoutManager(new LinearLayoutManager(getContext()));
-
         // Setting click actions for the utility icons on the top bar ( sort, view, search, etc... )
         ImageButton sorticon = view.findViewById(R.id.sorticon);
+
+        // Setting adapters for Grid and RecylerView
+        allhikes = query();
+        HikeCardAdapter adapter = new HikeCardAdapter(getContext(), allhikes, view).setManager(getParentFragmentManager());
+        list_of_hike_view.setLayoutManager(new LinearLayoutManager(getContext()));
+        list_of_hike_view.setAdapter(adapter);
+
+
+        // Viewing each card in a different mode
         sorticon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                adapter.state = adapter.state == 0 ? 1 : adapter.state==1 ? 2 : 0;
+                list_of_hike_view.setAdapter(adapter);
             }
         });
 
-        // Setting adapters for Grid and RecylerView
-        allhikes = Hikes.query();
-        GridCardAdapter adapter = new GridCardAdapter(getContext(), allhikes, view, getParentFragmentManager());
-        grid.setAdapter(adapter);
+        adapter.setcallback(new HikeCardAdapter.Callback() {
+            @Override
+            public void onchange() {
+                adapter.items = Hikes.query();
+                list_of_hike_view.setAdapter(adapter);
+            }
+        });
 
-
-//        HikeCardAdapter adapter = new HikeCardAdapter(getContext(), allhikes, view).setManager(getParentFragmentManager());
-//        BigCardAdapter adapterbigcard = new BigCardAdapter(getContext(),allhikes, view, getParentFragmentManager(), adapter);
-
-        // Setting callbacks on adapter
-//        adapter.setcallback(new HikeCardAdapter.Callback() {
-//            @Override
-//            public void onchange() {
-//                adapter.items = Hikes.query();
-//                list_of_hike_view.setAdapter(adapter);
-//            }
-//        });
-//
 
         // Detect if the recycle view is at its top
         View overlaytop = view.findViewById(R.id.overlaytop);
@@ -205,6 +255,28 @@ public class Home extends Fragment {
 
             }
         });
+
+        grid.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                if(i==0) {
+                    if (overlaytop.getVisibility() == View.VISIBLE)
+                        overlaytop.setAnimation(fadeOut);
+                    overlaytop.setVisibility(View.INVISIBLE);
+                }else{
+
+                    if(overlaytop.getVisibility()==View.INVISIBLE)
+                        overlaytop.setAnimation(fadeIn);
+                    overlaytop.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
         // Check whether the user has switched to "Favorite"
         ((BottomNavigationView)view.findViewById(R.id.bottomNavigationViewHome)).setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -323,10 +395,10 @@ public class Home extends Fragment {
         });
 
         // Searching below
-        View original_home_bar = view.findViewById(R.id.topbarcommonlayout);
-        View search_bar = view.findViewById(R.id.searchsection);
-        EditText searchbox = view.findViewById(R.id.searchbox);
-        recognizer = new SpeechRecognizer(getActivity());
+        original_home_bar = view.findViewById(R.id.topbarcommonlayout);
+        search_bar = view.findViewById(R.id.searchsection);
+        searchbox = view.findViewById(R.id.searchbox);
+
         searchbox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -378,36 +450,33 @@ public class Home extends Fragment {
             // Search with voice if possible
             @Override
             public void onClick(View view) {
+                Intent speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                speech.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                speech.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start speaking");
+                launcher.launch(speech);
 
-
-//                try {
-//                    startActivityForResult(recognizer.recognizerIntent, 100);
-//                } catch (ActivityNotFoundException e) {
-//                    Log.d("debug", "WAD");
-//                }
             }
         });
 
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            if (result != null && !result.isEmpty()) {
-                String recognizedText = result.get(0); // Get the first result
-                Log.d("debug", recognizedText);
-            }
-        }
-    }
+    ActivityResultLauncher<Intent> launcher;
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (recognizer.speechRecognizer != null) {
-            recognizer.speechRecognizer.destroy();
-        }
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode()==RESULT_OK && result.getData()!=null) {
+                    Intent data = result.getData();
+                    String ret = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+
+                    searchbox.setText(ret);
+                }
+            }
+        });
     }
 }
