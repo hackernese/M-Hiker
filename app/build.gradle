@@ -57,8 +57,9 @@ dependencies {
 //    implementation 'com.google.maps:google-maps-services:2.2.0'
 //    implementation 'org.slf4j:slf4j-simple:1.7.25'
 
-    // Add the Retrofit dependency to your app-level build.gradle file
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation("com.squareup.okhttp3:okhttp:4.11.0") // Https requests
+
+    implementation 'com.google.android.libraries.places:places:3.1.0'
+
 }
 

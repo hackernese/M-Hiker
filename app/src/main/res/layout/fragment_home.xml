@@ -618,6 +618,7 @@
         android:id="@+id/hikelist"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:textAlignment="center"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/overlaybottom"
         app:layout_constraintEnd_toEndOf="parent"

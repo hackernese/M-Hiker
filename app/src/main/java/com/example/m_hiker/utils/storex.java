@@ -20,6 +20,7 @@ public class storex extends AppCompatActivity {
 
     public static String abpath;
 
+    public static String apikey;
 
     public static void setmainActivity(MainActivity activity, FragmentManager manager){
         storex.activity = activity;

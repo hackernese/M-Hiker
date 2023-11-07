@@ -1,16 +1,7 @@
 package com.example.m_hiker.Home.HikesCard.cards;
-
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.m_hiker.R;
-import com.example.m_hiker.database.Hikes;
-
 public class ListCard extends CardHolder {
     public ListCard(@NonNull View itemView) {
         super(itemView);

@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.speech.RecognizerIntent;
@@ -18,9 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.m_hiker.CreateHikePage.LocationList.LocationAdapter;
+import com.example.m_hiker.CreateHikePage.LocationList.LocationItem;
 import com.example.m_hiker.R;
 import com.example.m_hiker.utils.storex;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,6 +48,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -238,6 +246,34 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_location_page, container, false);
 
 
+        // Animation
+        Animation slidedown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+        Animation slideup = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+        Animation fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+        Animation fadeout = AnimationUtils.loadAnimation(getContext(), R.anim.fadeout);
+
+        // Common variables
+        Geocoder geocoder = new Geocoder(getContext());
+
+        // Creating an adapter for listing location
+        RecyclerView localist = view.findViewById(R.id.locationlist); // The recyclerview
+        View locationlistview = view.findViewById(R.id.locationlistcard); // The card containing the recylerview
+        ArrayList<LocationItem> l = new ArrayList<>();
+
+        l.add(new LocationItem());
+        l.add(new LocationItem());
+        l.add(new LocationItem());
+        l.add(new LocationItem());
+        l.add(new LocationItem());
+        l.add(new LocationItem());
+        l.add(new LocationItem());
+
+
+        LocationAdapter adapter = new LocationAdapter(getContext(), l);
+        localist.setLayoutManager(new LinearLayoutManager(getContext()));
+        localist.setAdapter(adapter);
+
+
         view.findViewById(R.id.voice).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -259,7 +295,45 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                callback.location(charSequence.toString());
+
+                String ret = charSequence.toString();
+
+
+                if(ret.length()==0){
+                    locationlistview.setVisibility(View.INVISIBLE);
+                }else{
+                    locationlistview.setVisibility(View.VISIBLE);
+                }
+
+                callback.location(ret);
+
+                try {
+                    List<Address> addresses = geocoder.getFromLocationName(ret, 20);
+                    if(addresses==null)return;
+
+                    if (!addresses.isEmpty()) {
+
+                        addresses.forEach(e->{
+                            Log.d("debug", e.getAddressLine(0) + " " + e.getMaxAddressLineIndex());
+                        });
+
+//                        Address address = addresses.get(0);
+//
+//                        Log.d("debug", address.getAddressLine(0));
+//                        double latitude = address.getLatitude();
+//                        double longitude = address.getLongitude();
+//                        // Use latitude and longitude for your purposes
+                    } else {
+                        // Address not found
+                        Log.d("debug", "Not found");
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // Handle exception
+                }
+
+
             }
 
             @Override

@@ -15,12 +15,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.m_hiker.Dialogs.DeleteWarning;
 import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.Home.HikesCard.cards.BigCard;
 import com.example.m_hiker.Home.HikesCard.cards.CardHolder;
+import com.example.m_hiker.Home.HikesCard.cards.HugeCard;
 import com.example.m_hiker.Home.HikesCard.cards.ListCard;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
@@ -55,28 +57,21 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
     private List<Hikes> totalselected = new ArrayList<>();
 
 
+
+
     public int state = 0; // 0 = list, 1 = grid, 2 = big grid
 
     @NonNull
     @Override
     public CardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        Log.d("debug", "RAWD");
-
-        CardHolder holder;
-
-        if(state==0){
-            inflated_view = LayoutInflater.from(context).inflate(R.layout.hike_card, parent, false);
-            holder = new ListCard(inflated_view);
-        }else if(state==1){
-            inflated_view = LayoutInflater.from(context).inflate(R.layout.bigcarditem, parent, false);
-            holder = new BigCard(inflated_view);
-        }else{
-            inflated_view = LayoutInflater.from(context).inflate(R.layout.bigcarditem, parent, false);
-            holder = new ListCard(inflated_view);
-        }
-
+        inflated_view = LayoutInflater.from(context).inflate(viewType, parent, false);
+        CardHolder holder = state==0 ? new ListCard(inflated_view) : state==1 ? new BigCard(inflated_view) : new HugeCard(inflated_view);
         return holder;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return state==0 ? R.layout.hike_card : state==1 ? R.layout.bigcarditem : R.layout.hugecard;
     }
 
     private List<Integer> selected = new ArrayList<>();

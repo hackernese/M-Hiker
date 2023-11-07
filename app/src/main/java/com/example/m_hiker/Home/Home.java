@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -210,6 +212,14 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
                 adapter.state = adapter.state == 0 ? 1 : adapter.state==1 ? 2 : 0;
+
+                if(adapter.state==1) {
+                    list_of_hike_view.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                    list_of_hike_view.getLayoutParams().width = RecyclerView.LayoutParams.WRAP_CONTENT;
+                }else {
+                    list_of_hike_view.setLayoutManager(new LinearLayoutManager(getContext()));
+                    list_of_hike_view.getLayoutParams().width = RecyclerView.LayoutParams.MATCH_PARENT;
+                }
                 list_of_hike_view.setAdapter(adapter);
             }
         });

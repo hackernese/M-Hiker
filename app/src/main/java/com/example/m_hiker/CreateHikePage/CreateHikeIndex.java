@@ -297,8 +297,8 @@ public class CreateHikeIndex extends Fragment {
                 new_difficulty = difficult;
             }
         });
-        fragments.add(namefrag);
         fragments.add(locadrag);
+        fragments.add(namefrag);
         fragments.add(datefrag);
         fragments.add(extradrag);
 
