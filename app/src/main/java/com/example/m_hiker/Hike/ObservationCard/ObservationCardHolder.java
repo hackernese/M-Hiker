@@ -37,10 +37,6 @@ public class ObservationCardHolder extends RecyclerView.ViewHolder {
     Observation object;
 
     public void setpager(Observation ob, Fragment activity){
-//        this.object = ob;
-        fragments.add(new ObservationThumbnail());
-        fragments.add(new ObservationThumbnail());
-        fragments.add(new ObservationThumbnail());
         ObservationThumbnailAdapter adapter = new ObservationThumbnailAdapter(activity, fragments);
         obpager.setAdapter(adapter);
     }

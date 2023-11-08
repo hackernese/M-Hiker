@@ -1,17 +1,29 @@
 package com.example.m_hiker;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 
 import com.example.m_hiker.Dialogs.MediaPlayer.MediaSlider;
+import com.example.m_hiker.Dialogs.SocialMedia;
 import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.utils.storex;
+import com.karumi.dexter.BuildConfig;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -62,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
 //        Places.initialize(getApplicationContext(), storex.apikey);
 //        PlacesClient placeclient = Places.createClient(this);
 
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_SEND);
+//        intent.putExtra(Intent.EXTRA_TEXT, "DAWD");
+//        intent.putExtra(Intent.EXTRA_STREAM, uri);
+//        intent.setType("image/*");
+//        Intent share = Intent.createChooser(intent, "Share via");
+//        startActivity(share);
     }
 
     private String getApiKeyFromManifest() {

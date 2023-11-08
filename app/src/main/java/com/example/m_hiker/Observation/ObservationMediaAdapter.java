@@ -69,7 +69,7 @@ public class ObservationMediaAdapter extends RecyclerView.Adapter<ObservationMed
         holder.viewme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MediaSlider(context, items);
+                new MediaSlider(context, items, position);
             }
         });
 

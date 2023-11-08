@@ -2,6 +2,7 @@ package com.example.m_hiker.Hike.ObservationCard;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,10 +23,11 @@ import com.example.m_hiker.R;
 import com.example.m_hiker.database.Observation;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObservationCardAdapter extends RecyclerView.Adapter<ObservationCardHolder> {
+public class  ObservationCardAdapter extends RecyclerView.Adapter<ObservationCardHolder> {
 
     Context context;
     public List<Observation> observations;
@@ -77,7 +79,6 @@ public class ObservationCardAdapter extends RecyclerView.Adapter<ObservationCard
         holder.title.setText(ob.title);
         holder.context = context;
 
-
         // When the user clicks on the card
         holder.self.findViewById(R.id.accessobbtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,17 +126,13 @@ public class ObservationCardAdapter extends RecyclerView.Adapter<ObservationCard
                 share.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new SocialMedia(context).share("Share observation");
-//                        Intent intent = new Intent();
-//                        intent.setAction(Intent.ACTION_SEND);
-//                        intent.putExtra(Intent.EXTRA_TEXT, "DAWDAWD");
-//                        intent.setType("text/plain");
-//
-//                        Intent share = Intent.createChooser(intent, "Share via");
-//
-//                        if(share.resolveActivity(context.getPackageManager()) != null ){
-//                            context.startActivity(share);
-//                        }
+
+                        ArrayList<String> uris = new ArrayList<>();
+                        ob.getmedias().forEach(e->{
+                            uris.add(e.path);
+                        });
+
+                        new SocialMedia(context).share(ob.comments, ob.title, uris);
                         dialog.dismiss();
                     }
                 });

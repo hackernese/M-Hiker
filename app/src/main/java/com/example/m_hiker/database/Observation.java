@@ -133,8 +133,6 @@ public class Observation implements CommonTable {
     }
 
 
-
-
     public static ArrayList<Observation> query(String column, String value){
         ArrayList<Observation> ret = new ArrayList<>();
         SQLiteDatabase query = db.getReadableDatabase();

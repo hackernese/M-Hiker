@@ -102,11 +102,11 @@ public class Media extends Fragment {
             video.setVideoURI(media.toUri()); // Setting the URI to the video
 
 
-            MediaController mediacontroller = new MediaController(); // Allowing the video to have a controller bar
-            // to either stop, play or continue
-            mediacontroller.setAnchorView(video);
-            // Anchor the controller to the parent view of where the "video" is standing
-            video.setMediaController(mediacontroller);
+//            MediaController mediacontroller = new MediaController(); // Allowing the video to have a controller bar
+//            // to either stop, play or continue
+//            mediacontroller.setAnchorView(video);
+//            // Anchor the controller to the parent view of where the "video" is standing
+//            video.setMediaController(mediacontroller);
 
 
             video.start();

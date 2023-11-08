@@ -1,37 +1,28 @@
 package com.example.m_hiker.Observation;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import androidx.gridlayout.widget.GridLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.m_hiker.CreateObservation.ImageGrid.ImageItem;
 import com.example.m_hiker.Dialogs.DeleteWarning;
+import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.R;
-import com.example.m_hiker.components.SocialMedia;
+import com.example.m_hiker.Dialogs.SocialMedia;
 import com.example.m_hiker.database.Observation;
 
-import java.io.File;
+import java.util.ArrayList;
 
 
 /**
@@ -146,7 +137,12 @@ public class ViewObservation extends Fragment {
         view.findViewById(R.id.sharebtnob).setOnClickListener(new View.OnClickListener()     {
             @Override
             public void onClick(View view) {
-                new SocialMedia(getContext(), view);
+                ArrayList<String> uris = new ArrayList<>();
+                ob.getmedias().forEach(e->{
+                    uris.add(e.path);
+                });
+
+                (new SocialMedia(context)).share(ob.title, ob.comments, uris);
             }
         });
 
@@ -162,7 +158,9 @@ public class ViewObservation extends Fragment {
 
                     @Override
                     public void agree() {
-
+                        ob.delete();
+                        ToastMessage.success(view, "Successfully deleted observation");
+                        getActivity().onBackPressed();
                     }
                 });
 

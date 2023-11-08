@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewParent;
@@ -53,7 +54,7 @@ public class MediaSlider{
 
     TextView datetime;
 
-    public MediaSlider(Context context, ArrayList<ObservationMedia> media) {
+    public MediaSlider(Context context, ArrayList<ObservationMedia> media, int index) {
 
         this.context = context;
 
@@ -71,8 +72,12 @@ public class MediaSlider{
         slider.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                // This method will be called every time the user swipes to a different page.
+                // This method will be called every time the user sw ipes to a different page.
                 Media temp = ((Media)fragments.get(position));
+
+                if(temp.video==null)return;
+
+                Log.d("debug", temp.media.created);
 
                 temp.video.start();
                 datetime.setText(temp.media.created);
@@ -82,6 +87,11 @@ public class MediaSlider{
         Adapter adapter = new Adapter((FragmentActivity)context, fragments);
         slider.setAdapter(adapter);
 
+
+        // Setting default slide
+        Media temp = ((Media) fragments.get(index));
+        datetime.setText(temp.media.created);
+        slider.setCurrentItem(index, false);
 
         // Close button
         view.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
