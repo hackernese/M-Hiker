@@ -134,6 +134,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/backarrow"
+                    android:drawableTint="?attr/textCoreColor"
+
+
                     android:hint="Category" />
 
             </com.google.android.material.textfield.TextInputLayout>

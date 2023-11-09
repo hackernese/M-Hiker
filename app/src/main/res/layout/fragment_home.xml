@@ -374,6 +374,7 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
+                    android:tint="?attr/textCoreColor"
                     android:layout_width="35dp"
                     android:layout_height="40dp"
                     android:src="@drawable/logodark"
@@ -397,6 +398,7 @@
                 app:layout_constraintVertical_bias="0.5">
 
                 <ImageButton
+                    android:tint="?attr/textCoreColor"
                     android:id="@+id/sorticon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -411,6 +413,8 @@
                     app:layout_constraintVertical_bias="0.5" />
 
                 <ImageButton
+                    android:tint="?attr/textCoreColor"
+
                     android:id="@+id/searchicon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -424,6 +428,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
+                    android:tint="?attr/textCoreColor"
                     android:id="@+id/imageButton4"
                     android:layout_width="40dp"
                     android:layout_height="40dp"

@@ -159,6 +159,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/hugelocation" />
 
                 <ImageView
+                    android:tint="?attr/textCoreColor"
                     android:id="@+id/hugefavorite"
                     android:layout_width="30dp"
                     android:layout_height="30dp"

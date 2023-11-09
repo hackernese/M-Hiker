@@ -4,7 +4,7 @@
 
     <item>
         <shape>
-            <solid android:color="@color/white"></solid>
+            <solid android:color="?attr/popupBackground"></solid>
             <corners android:topRightRadius="40dp" android:topLeftRadius="40dp"></corners>
             <padding android:bottom="10dp" android:left="10dp" android:right="10dp"
                 android:top="10dp"

@@ -16,6 +16,11 @@
     <color name="dragbar">#B6B6B6</color>
     <color name="tomato">#FF6347</color>
 
+    <color name="popup">#252525</color>
+
+    <color name="dragbarnight">#505050</color>
+
+
     <!--    &lt;!&ndash;    FOr light theme&ndash;&gt;-->
 <!--    <color name="light_primary">#f1f0f2</color>-->
 <!--    <color name="light_secondary">#568072</color>-->

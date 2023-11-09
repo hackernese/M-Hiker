@@ -41,6 +41,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:tint="?attr/textCoreColor"
+
             android:id="@+id/savebtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,6 +79,7 @@
             app:layout_constraintVertical_bias="0.5" />
 
         <ImageButton
+            android:tint="?attr/textCoreColor"
             android:id="@+id/backmain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -115,8 +118,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            app:boxStrokeColor="@color/error"
-            app:boxStrokeErrorColor="@color/error"
             app:errorIconTint="@color/error"
             app:errorTextColor="@color/error"
             app:layout_constraintEnd_toEndOf="parent"
@@ -201,6 +202,8 @@
             android:id="@+id/textInputLayout14"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
+            android:drawableTint="?attr/textCoreColor"
+
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -211,6 +214,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/backarrow"
+                android:drawableTint="?attr/textCoreColor"
+
                 android:hint="Unit" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -220,6 +225,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:text="MM/DD/YYYY"
+
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -232,6 +238,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/textInputLayout16"
             app:layout_constraintStart_toStartOf="parent"
@@ -240,6 +247,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/difficultybox"
                 android:layout_width="match_parent"
+                android:drawableTint="?attr/textCoreColor"
+
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/backarrow"
                 android:hint="Difficulty" />
@@ -257,6 +266,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/parking"
+                android:drawableTint="?attr/textCoreColor"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Parking" />

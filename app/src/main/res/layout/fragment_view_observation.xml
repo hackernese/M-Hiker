@@ -32,6 +32,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:tint="?attr/textCoreColor"
+
             android:id="@+id/deletebtnob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,6 +47,8 @@
             app:layout_constraintVertical_bias="0.5" />
 
         <ImageButton
+            android:tint="?attr/textCoreColor"
+
             android:id="@+id/editbtnob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,6 +61,8 @@
             app:layout_constraintVertical_bias="0.5" />
 
         <ImageButton
+            android:tint="?attr/textCoreColor"
+
             android:id="@+id/sharebtnob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +74,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
-        <ImageButton
+        <ImageButton                    android:tint="?attr/textCoreColor"
+
+
             android:id="@+id/backbtnob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,6 +126,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:tint="?attr/textCoreColor"
                     android:id="@+id/imageView6"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -146,6 +155,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:tint="?attr/textCoreColor"
                     android:id="@+id/imageView236"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -175,6 +185,8 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:tint="?attr/textCoreColor"
+
                     android:id="@+id/imageView116"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -205,6 +217,8 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:tint="?attr/textCoreColor"
+
                     android:id="@+id/imageVie333w6"
                     android:layout_width="25dp"
                     android:layout_height="25dp"

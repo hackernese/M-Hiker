@@ -192,7 +192,7 @@ public class CreateHikeIndex extends Fragment {
         Runnable enableNextbtnstate = new Runnable() {
             @Override
             public void run() {
-                text.setTextColor(getResources().getColor(R.color.black));
+                text.setTextColor(getResources().getColor(R.color.dragbarnight));
                 viewpager.setUserInputEnabled(true);
             }
         };

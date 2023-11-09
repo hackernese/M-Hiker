@@ -126,6 +126,7 @@
                 app:srcCompat="@drawable/favorite" />
 
             <ImageView
+                android:tint="?attr/textCoreColor"
                 android:id="@+id/favoritebig"
                 android:layout_width="20dp"
                 android:layout_height="20dp"

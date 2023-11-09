@@ -43,6 +43,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageButton
+                    android:tint="?attr/textCoreColor"
+
                     android:id="@+id/closebtndate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,6 +58,8 @@
                     app:srcCompat="@drawable/x" />
 
                 <ImageButton
+                    android:tint="?attr/textCoreColor"
+
                     android:id="@+id/confirmbtndate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
