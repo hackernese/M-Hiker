@@ -647,6 +647,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/baseline_do_not_disturb_24"
+            android:tint="?attr/textCoreColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

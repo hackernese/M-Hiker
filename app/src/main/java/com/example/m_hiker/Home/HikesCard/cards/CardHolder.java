@@ -79,6 +79,8 @@ public class CardHolder  extends RecyclerView.ViewHolder {
         unselected.setVisibility(View.GONE);
     }
 
+    public ImageView image;
+
     public int position;
     public void update_favorite_status(boolean status){
         this.islove = status;

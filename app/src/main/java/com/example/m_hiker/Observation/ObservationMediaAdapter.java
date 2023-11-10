@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.m_hiker.Dialogs.MediaPlayer.MediaSlider;
 import com.example.m_hiker.R;
+import com.example.m_hiker.database.Observation;
 import com.example.m_hiker.database.ObservationMedia;
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public class ObservationMediaAdapter extends RecyclerView.Adapter<ObservationMed
             viewme = itemView.findViewById(R.id.view);
         }
     }
+
+    public Observation observation;
 
     Context context;
     ArrayList<ObservationMedia> items;
@@ -69,11 +72,9 @@ public class ObservationMediaAdapter extends RecyclerView.Adapter<ObservationMed
         holder.viewme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MediaSlider(context, items, position);
+                new MediaSlider(context, items, position, observation);
             }
         });
-
-
 
     }
 

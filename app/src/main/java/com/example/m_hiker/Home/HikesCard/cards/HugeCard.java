@@ -17,5 +17,6 @@ public class HugeCard extends CardHolder{
         description = itemView.findViewById(R.id.hugedescribe);
         location = itemView.findViewById(R.id.hugelocation);
         navigatetohike = itemView.findViewById(R.id.hugeclick);
+        image = itemView.findViewById(R.id.hugeimage);
     }
 }

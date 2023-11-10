@@ -1,6 +1,7 @@
 package com.example.m_hiker.database;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -69,6 +70,38 @@ public class ObservationMedia implements CommonTable{
 //        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 //        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
 //    }
+
+    public static ObservationMedia query(int id){
+        SQLiteDatabase query = db.getReadableDatabase();
+        String[] projection = {
+            "id",
+            "path",
+            "highlight",
+            "observeid"
+        };
+
+
+        String selection = "id = ?";
+        String[] arguments = { id + "" }; // Used used in WHERE clause
+
+        Cursor cursor = query.query(
+                tablename,
+                projection,
+                selection,  arguments,
+                null, null, "created DESC"
+        );
+
+        cursor.moveToNext();
+
+        int id_ = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+        String path = cursor.getString(cursor.getColumnIndexOrThrow("path"));
+        int highlight = cursor.getInt(cursor.getColumnIndexOrThrow("highlight"));
+        int obid = cursor.getInt(cursor.getColumnIndexOrThrow("observeid"));
+        ObservationMedia ret = new ObservationMedia(obid, path, highlight==1 ? true : false);
+        ret.id = id_;
+        return ret;
+
+    }
 
     public ObservationMedia(int observeid, String path, boolean highlight){
         this.is_hightlight = highlight;

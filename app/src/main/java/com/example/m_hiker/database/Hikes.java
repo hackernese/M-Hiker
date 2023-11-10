@@ -147,6 +147,7 @@ public class Hikes implements CommonTable {
             String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
             boolean islove = cursor.getInt(cursor.getColumnIndexOrThrow("islove")) == 1 ? true : false;
             String thumbnail = cursor.getString(cursor.getColumnIndexOrThrow("thumbnail"));
+            int thumbnail_id = cursor.getInt(cursor.getColumnIndexOrThrow("thumbnail_id"));
             double lat = cursor.getDouble(cursor.getColumnIndexOrThrow("lat"));
             double longtitude = cursor.getDouble(cursor.getColumnIndexOrThrow("long"));
             int companion = cursor.getInt(cursor.getColumnIndexOrThrow("companions"));
@@ -154,6 +155,7 @@ public class Hikes implements CommonTable {
                     name, location, date, length, units, level, parking, description, islove, thumbnail, companion, lat, longtitude
             );
             temp.id = id;
+            temp.thumbnail_id = thumbnail_id;
             ret.add(temp);
 
         }
@@ -176,6 +178,7 @@ public class Hikes implements CommonTable {
                 "companions",
                 "description",
                 "thumbnail",
+                "thumbnail_id",
                 "lat",
                 "long",
                 "islove"
@@ -191,6 +194,7 @@ public class Hikes implements CommonTable {
         );
 
         while(cursor.moveToNext()){
+            int thumbnail_id = cursor.getInt(cursor.getColumnIndexOrThrow("thumbnail_id"));
             int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
             String location = cursor.getString(cursor.getColumnIndexOrThrow("location"));
@@ -206,7 +210,7 @@ public class Hikes implements CommonTable {
             double longtitude = cursor.getDouble(cursor.getColumnIndexOrThrow("long"));
             int companion = cursor.getInt(cursor.getColumnIndexOrThrow("companions"));
             Hikes temp = new Hikes(
-                    name, location, date, length, units, level, parking, description, islove, thumbnail, companion, lat, longtitude
+                    name, location, date, length, units, level, parking, description, islove, thumbnail, companion, lat, longtitude, thumbnail_id
             );
             temp.id = id;
             ret.add(temp);
@@ -220,6 +224,7 @@ public class Hikes implements CommonTable {
     public int id;
 
     // Properties of this specific instance
+    public int thumbnail_id;
     public String name; // Name of this hike
     public String location;  // location of the hike
     public String date; // Date of this hike
@@ -239,6 +244,35 @@ public class Hikes implements CommonTable {
     String created;
     String modified;
 
+    public Hikes(String name,
+                 String location,
+                 String date,
+                 int length,
+                 String units,
+                 String level,
+                 boolean parking,
+                 String description,
+                 boolean islove,
+                 String thumbnail_image,
+                 int companion,
+                 double lat,
+                 double longtitude,
+                 int thumbnail_id){
+        this.lat = lat;
+        this.longtitude = longtitude;
+        this.name = name;
+        this.location = location;
+        this.date = date;
+        this.length = length;
+        this.units = units;
+        this.level = level;
+        this.parking = parking;
+        this.description = description;
+        this.islove = islove;
+        this.thumbnail = thumbnail_image;
+        this.companion = companion;
+        this.thumbnail_id = thumbnail_id;
+    }
     public Hikes(String name,
                  String location, String date,
                  int length, String units,
@@ -284,12 +318,14 @@ public class Hikes implements CommonTable {
         "parking     INTEGER NOT NULL," +
         "companions   INTEGER," +
         "thumbnail   TEXT," +
+        "thumbnail_id INTEGER,"  +
         "description TEXT , " +
         "lat TEXT, " +
         "long TEXT , " +
         "islove      INTEGER DEFAULT 0," +
         "created     TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-        "modified    TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+        "modified    TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+        "FOREIGN KEY (thumbnail_id) REFERENCES media(id)" +
     ");" +
     "CREATE TRIGGER update_modified_timestamp AFTER UPDATE ON "+tablename + " " +
     "FOR EACH ROW " +

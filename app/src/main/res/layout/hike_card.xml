@@ -78,7 +78,7 @@
                     android:id="@+id/thumbnailcard"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/emptyimage"
                     android:visibility="visible"
                     app:circularflow_defaultRadius="15dp"

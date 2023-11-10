@@ -91,7 +91,10 @@ public class DatabaseMHike extends  SQLiteOpenHelper{
         // Crafting the table
         ContentValues vals = new ContentValues();
         values.forEach((key, value)->{
-            vals.put(key, value);
+            if(value.equals("null")){
+                vals.putNull(key);
+            }else
+                vals.put(key, value);
         });
 
         // Arguments which will be passed in later

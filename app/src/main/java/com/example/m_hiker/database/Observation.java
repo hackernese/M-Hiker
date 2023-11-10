@@ -50,10 +50,6 @@ public class Observation implements CommonTable {
 
     }
 
-//    public static ArrayList<Observation> query(int id){
-//
-//    }
-
     public static class ParcelObservation implements Parcelable {
 
         public Observation object;

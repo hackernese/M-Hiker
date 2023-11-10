@@ -27,6 +27,7 @@ import com.example.m_hiker.Home.HikesCard.cards.ListCard;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Hikes;
+import com.example.m_hiker.database.ObservationMedia;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -161,6 +162,17 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
         holder.location.setText(item.location);
         holder.description.setText(item.description);
         holder.title.setText(item.name);
+
+        if(item.thumbnail_id != 0){
+
+            Log.d("debug", "Found observation media id for hike " + item.id  + " = " + item.thumbnail_id);
+
+            ObservationMedia media = ObservationMedia.query(item.thumbnail_id);
+
+            holder.image.setImageURI(media.toUri());
+
+        }
+
 
         // Buttons on the bottom bar when user selects
         editbtn = parentView.findViewById(R.id.editoption);

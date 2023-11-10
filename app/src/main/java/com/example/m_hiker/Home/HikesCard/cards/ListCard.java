@@ -13,5 +13,6 @@ public class ListCard extends CardHolder {
         description = itemView.findViewById(R.id.bio);
         location = itemView.findViewById(R.id.location);
         navigatetohike = itemView.findViewById(R.id.navigatortohikebtn);
+        image = itemView.findViewById(R.id.thumbnailcard);
     }
 }

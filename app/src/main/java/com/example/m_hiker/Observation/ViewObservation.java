@@ -109,6 +109,7 @@ public class ViewObservation extends Fragment {
 
         // Setting up the RecyclerView and its adapter
         ObservationMediaAdapter adapter = new ObservationMediaAdapter(getContext(), ob.getmedias());
+        adapter.observation = ob;
         StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         grid.setLayoutManager(manager);
         grid.setAdapter(adapter);

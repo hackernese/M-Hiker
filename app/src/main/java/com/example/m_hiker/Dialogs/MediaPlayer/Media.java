@@ -76,6 +76,7 @@ public class Media extends Fragment {
     public VideoView video;
     public ImageView img;
     public TextView datetime;
+    public ImageView bookmark;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
