@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView28" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/maintext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

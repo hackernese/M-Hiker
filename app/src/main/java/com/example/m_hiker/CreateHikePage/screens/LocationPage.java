@@ -1,12 +1,19 @@
 package com.example.m_hiker.CreateHikePage.screens;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.m_hiker.CreateHikePage.LocationList.LocationAdapter;
@@ -160,6 +169,32 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
     // Used for extracting local location later
     FusedLocationProviderClient locationclient;
 
+    private void setlocation(double lat, double long_){
+        mMap.clear();
+
+        LatLng location_ = new LatLng(lat, long_);
+        CameraUpdate update =  CameraUpdateFactory.newLatLngZoom(location_, 12.0f);
+        mMap.moveCamera(update);
+
+        // You can also add a marker at a specific location:
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(location_)
+                .title("Curent location")
+                .snippet("Long:" + long_ + " Lat:" + lat);
+        mMap.addMarker(markerOptions);
+        // You can customize other map settings as well, like zoom level, map type, etc.
+        mMap.setMapType(mMap.MAP_TYPE_NORMAL);
+        mMap.setMinZoomPreference(10.0f);
+
+        // You can also enable user interactions like zooming and panning:
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+
+        mMap.animateCamera(update);
+    }
+
+
+
     private void getCurrentLocation(){
         Task<Location> task = locationclient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -170,30 +205,28 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
                 if(location==null)
                     return;
 
+                Geocoder coder = new Geocoder(getContext());
+
+                double lat = location.getLatitude();
+                double long_ = location.getLongitude();
+                coder.getFromLocation(lat, long_, 1, new Geocoder.GeocodeListener() {
+                    @Override
+                    public void onGeocode(@NonNull List<Address> list) {
+
+                        set_chosen_location = true;
+
+                        String addr = list.get(0).getAddressLine(0);
+
+                        editbox.setText(addr);
+                        callback.location(addr, lat, long_);
+                    }
+                });
+
+                Log.d("debug", location.toString());
 //                        .url("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyDJtdZZqKshP83NfY23NU790t2JFSIIVLM&address=Hue")
 //                        .build();
                 // Clear old setting
-                mMap.clear();
-
-                LatLng location_ = new LatLng(location.getLatitude(), location.getLongitude());
-                CameraUpdate update =  CameraUpdateFactory.newLatLngZoom(location_, 12.0f);
-                mMap.moveCamera(update);
-
-                // You can also add a marker at a specific location:
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(location_)
-                        .title("Curent location")
-                        .snippet("Long:" + location.getLongitude() + " Lat:" + location.getLatitude());
-                mMap.addMarker(markerOptions);
-                // You can customize other map settings as well, like zoom level, map type, etc.
-                mMap.setMapType(mMap.MAP_TYPE_NORMAL);
-                mMap.setMinZoomPreference(10.0f);
-
-                // You can also enable user interactions like zooming and panning:
-                mMap.getUiSettings().setZoomControlsEnabled(true);
-                mMap.getUiSettings().setCompassEnabled(true);
-
-                mMap.animateCamera(update);
+                setlocation(location.getLatitude(), location.getLongitude());
 
             }
         });
@@ -238,6 +271,10 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
         return this;
     }
 
+    EditText editbox;
+
+    private boolean set_chosen_location = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -245,6 +282,8 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_location_page, container, false);
 
+
+        editbox  = ((EditText)view.findViewById(R.id.searchlocation));
 
         // Animation
         Animation slidedown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
@@ -261,33 +300,48 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
         ArrayList<LocationItem> l = new ArrayList<>();
 
         l.add(new LocationItem());
-        l.add(new LocationItem());
-        l.add(new LocationItem());
-        l.add(new LocationItem());
-        l.add(new LocationItem());
-        l.add(new LocationItem());
-        l.add(new LocationItem());
+        LocationAdapter adapter = new LocationAdapter(getContext(), l).setcallback(new LocationAdapter.Callback() {
+            @Override
+            public void call(String name, double lat, double long_) {
 
+                locationlistview.setVisibility(View.INVISIBLE);
 
-        LocationAdapter adapter = new LocationAdapter(getContext(), l);
+                if(name.trim().length()==0){
+                    // Grab the current virtual address ( Does not exist / recognize )
+                    callback.location(editbox.getText().toString().trim(), 0, 0);
+                    return;
+                }
+                set_chosen_location = true;
+                editbox.setText(name.trim());
+               callback.location(name, lat, long_);
+                setlocation(lat, long_);
+            }
+        });
         localist.setLayoutManager(new LinearLayoutManager(getContext()));
         localist.setAdapter(adapter);
 
 
-        view.findViewById(R.id.voice).setOnClickListener(new View.OnClickListener() {
+        // Clear button
+        ImageButton clearbtn = view.findViewById(R.id.clearbutton);
+        ImageButton voicebtn = view.findViewById(R.id.voice);
+        clearbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-//                speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-//                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//                speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
-//                        Locale.getDefault());
-//                speechIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text");
-//
+                editbox.setText("");
             }
         });
 
-        ((EditText)view.findViewById(R.id.searchlocation)).addTextChangedListener(new TextWatcher() {
+        voicebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                speech.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                speech.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start speaking");
+                launcher.launch(speech);
+            }
+        });
+
+        editbox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -296,38 +350,31 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String ret = charSequence.toString();
-
-
-                if(ret.length()==0){
-                    locationlistview.setVisibility(View.INVISIBLE);
-                }else{
-                    locationlistview.setVisibility(View.VISIBLE);
+                if(set_chosen_location){
+                    set_chosen_location = false;
+                    return;
                 }
 
-                callback.location(ret);
+                String ret = charSequence.toString();
+
+                if(ret.length()==0){
+
+                    callback.location("", 0,0);
+
+                    clearbtn.setVisibility(View.GONE);
+                    voicebtn.setVisibility(View.VISIBLE);
+                    locationlistview.setVisibility(View.INVISIBLE);
+                }else{
+                    clearbtn.setVisibility(View.VISIBLE);
+                    voicebtn.setVisibility(View.GONE);
+                    locationlistview.setVisibility(View.VISIBLE);
+                }
 
                 try {
                     List<Address> addresses = geocoder.getFromLocationName(ret, 20);
                     if(addresses==null)return;
 
-                    if (!addresses.isEmpty()) {
-
-                        addresses.forEach(e->{
-                            Log.d("debug", e.getAddressLine(0) + " " + e.getMaxAddressLineIndex());
-                        });
-
-//                        Address address = addresses.get(0);
-//
-//                        Log.d("debug", address.getAddressLine(0));
-//                        double latitude = address.getLatitude();
-//                        double longitude = address.getLongitude();
-//                        // Use latitude and longitude for your purposes
-                    } else {
-                        // Address not found
-                        Log.d("debug", "Not found");
-
-                    }
+                    adapter.setlocationlist(addresses);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // Handle exception
@@ -343,5 +390,26 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
         });
 
         return view;
+    }
+
+    ActivityResultLauncher<Intent> launcher;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode()==RESULT_OK && result.getData()!=null) {
+                    Intent data = result.getData();
+                    String ret = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+
+                    editbox.setText(ret);
+//                    searchbox.setText(ret);
+                }
+            }
+        });
+
     }
 }

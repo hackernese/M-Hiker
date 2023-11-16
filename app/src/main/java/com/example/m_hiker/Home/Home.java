@@ -28,6 +28,10 @@ import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+
+import com.example.m_hiker.Dialogs.DeleteWarning;
+import com.example.m_hiker.Dialogs.SortPanel;
+import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.R;
 import com.example.m_hiker.Home.HikesCard.HikeCardAdapter;
 import com.example.m_hiker.database.DatabaseMHike;
@@ -36,6 +40,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -141,6 +148,9 @@ public class Home extends Fragment {
         else
             notfoundview.setVisibility(View.GONE);
 
+        // Sort it by ID first ( descending order, latest ID appears first )
+        Collections.sort(ret, Comparator.comparingInt(Hikes::getid).reversed());
+
         return ret;
     }
 
@@ -178,6 +188,101 @@ public class Home extends Fragment {
         list_of_hike_view.setLayoutManager(new LinearLayoutManager(getContext()));
         list_of_hike_view.setAdapter(adapter);
 
+        // Sorting button
+        SortPanel panel = new SortPanel(new SortPanel.Callback() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void agree(int type, int order) {
+
+                // Sort by name
+                if(type==1)
+                    Collections.sort(allhikes, order==1 ? new Comparator<Hikes>() {
+                        @Override
+                        public int compare(Hikes hikes, Hikes t1) {
+                            return t1.name.compareTo(hikes.name);
+                        }
+                    } : order==2 ? new Comparator<Hikes>() {
+                        @Override
+                        public int compare(Hikes hikes, Hikes t1) {
+                            return hikes.name.compareTo(t1.name);
+                        }
+                    } : new Comparator<Hikes>() {
+                        @Override
+                        public int compare(Hikes hikes, Hikes t1) {
+                            return 0;
+                        }
+                    });
+
+                // Sort by date
+                if(type==2)
+                    Collections.sort(allhikes, order==1 ? new Comparator<Hikes>() {
+                        @Override
+                        public int compare(Hikes hikes, Hikes t1) {
+                            return t1.date.compareTo(hikes.date);
+                        }
+                    } : order==2 ? new Comparator<Hikes>() {
+                        @Override
+                        public int compare(Hikes hikes, Hikes t1) {
+                            return hikes.date.compareTo(t1.date);
+                        }
+                    } : new Comparator<Hikes>() {
+                        @Override
+                        public int compare(Hikes hikes, Hikes t1) {
+                            return 0;
+                        }
+                    });
+
+                // Empty type
+                if(type==0)
+                    // User is not sorting anything, go back to the original order
+                    Collections.sort(allhikes, Comparator.comparingInt(Hikes::getid).reversed());
+
+                // Refresh the adapter
+                list_of_hike_view.setAdapter(adapter);
+
+            }
+
+        });
+        view.findViewById(R.id.sortbutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                panel.show(getParentFragmentManager(), "Sort options");
+            }
+        });
+
+        // Delete all button
+        view.findViewById(R.id.deleteall).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DeleteWarning dialog = new DeleteWarning(new DeleteWarning.Callback() {
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public void agree() {
+
+                        // Delete the database
+                        Hikes.clear();
+
+                        // Reset the interface
+                        adapter.items = query();
+                        list_of_hike_view.setAdapter(adapter);
+
+                        ToastMessage.success(view, "Successfully deleted all hikes");
+                    }
+                });
+
+                dialog.setText("This action will permanently delete all hikes from the application. Are you sure ?");
+
+                dialog.show(getParentFragmentManager(), "Warning");
+            }
+        });
 
         // Viewing each card in a different mode
         sorticon.setOnClickListener(new View.OnClickListener() {

@@ -388,54 +388,64 @@
                 android:id="@+id/utilitybar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.907"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageButton
-                    android:tint="?attr/textCoreColor"
                     android:id="@+id/sorticon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
                     android:background="@drawable/ripple_effect"
                     android:src="@drawable/menu"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageButton4"
+                    app:layout_constraintEnd_toStartOf="@+id/sortbutton"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.5" />
 
                 <ImageButton
-                    android:tint="?attr/textCoreColor"
-
                     android:id="@+id/searchicon"
+
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/ripple_effect"
                     android:src="@drawable/search"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/sorticon"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintEnd_toStartOf="@+id/deleteall"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <ImageButton
-                    android:tint="?attr/textCoreColor"
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/sortbutton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/ripple_effect"
                     android:src="@drawable/sort"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5" />
+
+                <ImageButton
+                    android:id="@+id/deleteall"
+
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ripple_effect"
+                    android:src="@drawable/delete"
+                    android:tint="?attr/textCoreColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/sorticon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.5" />
             </androidx.constraintlayout.widget.ConstraintLayout>

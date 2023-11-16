@@ -1,6 +1,7 @@
 package com.example.m_hiker.database;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,13 +10,16 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class Hikes implements CommonTable {
+public class Hikes implements CommonTable{
 
 
     public static DatabaseMHike db;
@@ -44,6 +48,11 @@ public class Hikes implements CommonTable {
     public void insert(){
 
     }
+
+    public boolean getislove(){
+        return this.islove;
+    }
+
     public int getid(){
         return this.id;
     }
@@ -181,7 +190,8 @@ public class Hikes implements CommonTable {
                 "thumbnail_id",
                 "lat",
                 "long",
-                "islove"
+                "islove",
+                "created"
         };
 
         String[] arguments = {}; // Used used in WHERE clause
@@ -193,8 +203,12 @@ public class Hikes implements CommonTable {
                 null, null, "created DESC"
         );
 
+        // Used for datetime format later
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
         while(cursor.moveToNext()){
             int thumbnail_id = cursor.getInt(cursor.getColumnIndexOrThrow("thumbnail_id"));
+            String created = cursor.getString(cursor.getColumnIndexOrThrow("created"));
             int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
             String location = cursor.getString(cursor.getColumnIndexOrThrow("location"));
@@ -212,9 +226,15 @@ public class Hikes implements CommonTable {
             Hikes temp = new Hikes(
                     name, location, date, length, units, level, parking, description, islove, thumbnail, companion, lat, longtitude, thumbnail_id
             );
+            temp.created = created;
             temp.id = id;
-            ret.add(temp);
+            try{
+                temp.created_date = df.parse(created);
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
 
+            ret.add(temp);
         }
 
         return ret;
@@ -224,6 +244,7 @@ public class Hikes implements CommonTable {
     public int id;
 
     // Properties of this specific instance
+    public Date created_date;
     public int thumbnail_id;
     public String name; // Name of this hike
     public String location;  // location of the hike
@@ -306,6 +327,20 @@ public class Hikes implements CommonTable {
     }
 
     public static String tablename = "hikes";
+
+    public static void clear(){
+
+        SQLiteDatabase writedb = db.getWritableDatabase();
+
+        try{
+            writedb.execSQL(DELETE_TABLE);
+            writedb.execSQL(CREATE_TABLE);
+            Log.d("debug", "Successfully reset database");
+        }catch (SQLException e){
+            Log.e("sqlerror", e.getMessage());
+        }
+    }
+
     public static final String CREATE_TABLE =
         "CREATE TABLE IF NOT EXISTS " + tablename +"  (" +
         "id          INTEGER PRIMARY KEY, " +

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.m_hiker.CreateHikePage.screens.DatePage;
-import com.example.m_hiker.CreateHikePage.screens.HikeRunnable;
+import com.example.m_hiker.CreateHikePage.screens.*;
 import com.example.m_hiker.CreateHikePage.screens.LengthAndDifficulty;
 import com.example.m_hiker.CreateHikePage.screens.LocationPage;
 import com.example.m_hiker.CreateHikePage.screens.NamePage;
@@ -137,6 +137,9 @@ public class CreateHikeIndex extends Fragment {
     boolean isparking = false;
     int new_companions = 0;
 
+    double new_latitude = 0;
+    double new_longtitude = 0;
+
     private void openconfirmdialog(View view){
         BottomSheetDialog dialog = new BottomSheetDialog(getContext());
         View dialogview = LayoutInflater.from(getContext()).inflate(
@@ -238,7 +241,7 @@ public class CreateHikeIndex extends Fragment {
                     // Create a new hike
                     Hikes new_hike = new Hikes(
                             new_name, new_location, new_date, new_length, new_unit, new_difficulty, isparking,
-                            new_description, false, "", new_companions, 0, 0
+                            new_description, false, "", new_companions, new_latitude, new_longtitude
                     );
 
                     db.insert(new_hike);
@@ -282,8 +285,10 @@ public class CreateHikeIndex extends Fragment {
         });
         Fragment locadrag = ((LocationPage)new LocationPage()).setpager(viewpager).setcallback(new HikeRunnable(){
             @Override
-            public void location(String location) {
+            public void location(String location, double lat, double long_) {
                 new_location = location.trim();
+                new_latitude = lat;
+                new_longtitude = long_;
             }
         });
         Fragment extradrag =  new LengthAndDifficulty().setcallback(new HikeRunnable(){
@@ -297,8 +302,8 @@ public class CreateHikeIndex extends Fragment {
                 new_difficulty = difficult;
             }
         });
-        fragments.add(locadrag);
         fragments.add(namefrag);
+        fragments.add(locadrag);
         fragments.add(datefrag);
         fragments.add(extradrag);
 
@@ -335,23 +340,6 @@ public class CreateHikeIndex extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 checkbullet(position);
-
-                switch (position){
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                            default:
-                        break;
-                }
-
-
             }
 
             @Override

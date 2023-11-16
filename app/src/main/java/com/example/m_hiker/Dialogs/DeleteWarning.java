@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,14 @@ public class DeleteWarning extends AppCompatDialogFragment {
         super(contentLayoutId);
     }
 
+    public TextView maintext;
+
+    public String bodytext = "";
+
+    public void setText(String text){
+        bodytext = text;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -41,6 +50,11 @@ public class DeleteWarning extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.permanentlydelete, null);
+
+        maintext = view.findViewById(R.id.maintext);
+
+        if(bodytext.length()>0)
+            maintext.setText(bodytext);
 
         builder.setView(view).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override

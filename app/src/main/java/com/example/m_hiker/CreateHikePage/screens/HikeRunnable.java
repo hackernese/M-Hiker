@@ -7,7 +7,7 @@ public class HikeRunnable {
     public void name(String name){
     }
 
-    public void location(String name){
+    public void location(String name, double lat, double long_){
 
     }
 

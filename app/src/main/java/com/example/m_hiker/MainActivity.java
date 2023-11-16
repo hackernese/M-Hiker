@@ -18,6 +18,7 @@ import com.example.m_hiker.Dialogs.MediaPlayer.MediaSlider;
 import com.example.m_hiker.Dialogs.SocialMedia;
 import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.database.DatabaseMHike;
+import com.example.m_hiker.utils.func;
 import com.example.m_hiker.utils.storex;
 import com.karumi.dexter.BuildConfig;
 
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Log.e("debug", "Media folder has already existed");
         }
+
+
+        func.getcoords("Wall Streets");
 
         // Enabling Places API
 //        Places.initialize(getApplicationContext(), storex.apikey);
