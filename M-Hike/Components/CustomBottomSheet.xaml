@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="M_Hike.Components.CustomBottomSheet"
+             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+             Padding="16,32"      
+             >
+
+    <the49:BottomSheet.Detents>
+        <!-- Stop at the height of the screen -->
+        <the49:FullscreenDetent />
+        <!-- Stop at the height of the page content -->
+        <the49:ContentDetent />
+    </the49:BottomSheet.Detents>
+
+    <VerticalStackLayout Margin="0,36,0,0">
+        <Label Text="Hike's details" HorizontalTextAlignment="Center" FontSize="20"></Label>
+
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="ID"></Label>
+            <Label x:Name="ID" Text=""></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Name"></Label>
+            <Label x:Name="name" Text=""></Label>
+        </FlexLayout>
+
+        <FlexLayout Margin="10,10,10,10" Direction="Column">
+            <Label FlexLayout.Grow="1" Text="Location"></Label>
+            <Label  x:Name="location" Text="" Opacity="0.6" Margin="0,2,0,0"></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Latitude"></Label>
+            <Label x:Name="lat" Text=""></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Longtitude"></Label>
+            <Label x:Name="long" Text=""></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Date"></Label>
+            <Label x:Name="date" Text=""></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Length"></Label>
+            <Label x:Name="length" Text="23 km"></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Difficulty"></Label>
+            <Label x:Name="difficulty" Text=""></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Parking availability"></Label>
+            <Label x:Name="parking" Text=""></Label>
+        </FlexLayout>
+        <FlexLayout Margin="10,10,10,10">
+            <Label FlexLayout.Grow="1" Text="Companions"></Label>
+            <Label x:Name="companions" Text=""></Label>
+        </FlexLayout>
+
+        <FlexLayout Margin="10,10,10,10" Direction="Column">
+            <Label FlexLayout.Grow="1" Text="Comment:"></Label>
+            <Label  x:Name="description" Text="" Opacity="0.6" Margin="0,2,0,0"></Label>
+        </FlexLayout>
+        <FlexLayout Margin="0,16,0,0">
+
+            <Button Clicked="Button_Clicked" FlexLayout.Grow="1" CornerRadius="5" Text="Edit" BackgroundColor="Transparent" BorderColor="White" BorderWidth="1" Margin="2,2,2,2" TextColor="White"></Button>
+            <Button Clicked="Button_Clicked_1" FlexLayout.Grow="1" CornerRadius="5" Text="Delete" BackgroundColor="Tomato" TextColor="White"  Margin="2,2,2,2" ></Button>
+        </FlexLayout>
+
+    </VerticalStackLayout>
+</the49:BottomSheet>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="M_Hike.Views.OpenHike"
+             Title="OpenHike">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edit" Clicked="Edit" Priority="0" Order="Secondary" />
+        <ToolbarItem Text="Delete" Clicked="Delete" Priority="1" Order="Secondary" />
+
+    </ContentPage.ToolbarItems>
+
+    <VerticalStackLayout Padding="16,16,16,16">
+        <HorizontalStackLayout>
+            <Label Text="ID: " Opacity="0.5"></Label>
+            <Label Text="dawd"></Label>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

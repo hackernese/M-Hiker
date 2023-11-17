@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="M_Hike.Views.AddHike"
+                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            Title="New hike"
+             x:Name="titlebar"
+             >
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Clicked="SaveHike" Priority="1" Order="Default" />
+    </ContentPage.ToolbarItems>
+    <Grid Padding="10,10,10,10">
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <VerticalStackLayout Grid.Row="0">
+            <Label Text="Essential informaton :"  FontAttributes="Bold"  FontSize="16" Margin="5,10,0,5" >
+                </Label>
+                <Label Text="The following section contains mandatory information and details in order to create/save a/an new/existing hike event" FontSize="10" Opacity="0.6" Margin="5,0,0,10"></Label>
+
+            <Entry Placeholder="Name" ClearButtonVisibility="WhileEditing" x:Name="hikename"></Entry>
+
+            <Entry Placeholder="Location" Focused="locationame_Focused" Unfocused="locationame_Unfocused" TextChanged="locationame_TextChanged" ClearButtonVisibility="WhileEditing" x:Name="locationame"/>               
+
+                <HorizontalStackLayout>
+                    <Label Text="Latitude:" FontSize="10" Opacity="0.5" Padding="5,0,0,0"></Label>
+                    <Label Text="UNKNOWN" FontSize="10" Opacity="0.5" x:Name="lat"></Label>
+
+                    <Label Text="Longtitude:" FontSize="10" Opacity="0.5" Padding="20,0,0,0"></Label>
+                    <Label Text="UNKNOWN" FontSize="10" Opacity="0.5" x:Name="long"></Label>
+
+                </HorizontalStackLayout>
+
+                <FlexLayout>
+                    <Entry FlexLayout.Grow="2" Placeholder="Length" x:Name="lengthbox" Keyboard="Numeric" ClearButtonVisibility="WhileEditing"/>
+                    <Picker x:Name="unitpicker" FlexLayout.Grow="1" Title="Unit" />
+                </FlexLayout>
+
+                <FlexLayout>
+                    <Picker  x:Name="levelpicker" FlexLayout.Grow="1" Title="Level" />
+                    <DatePicker x:Name="datepicker" FlexLayout.Grow="1" MinimumDate="01/01/2020"
+                Date="06/21/2022" />
+                </FlexLayout>
+
+
+                <HorizontalStackLayout >
+                    <Label HorizontalOptions="Center" VerticalOptions="Center">Parking</Label>
+                    <Switch IsToggled="False" x:Name="switcher" VerticalOptions="End"></Switch>
+                </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1">
+            <Label Text="Optional fields :" FontAttributes="Bold" FontSize="16" Margin="5,30,0,10" ></Label>
+            <Label Text="The following section is optional" FontSize="10" Opacity="0.6" Margin="5,0,0,10"></Label>
+            <Editor x:Name="editor"
+         Placeholder="Description"
+         HeightRequest="120"
+         ></Editor>
+
+
+            <Label Text="Companions" Padding="5,20,10,0"></Label>
+            <Label Text="This field indicates how many friends and family members were joining you during your hike" FontSize="10" Opacity="0.6" Margin="5,5,0,10"></Label>
+            <FlexLayout>
+                <Slider Maximum="100" ValueChanged="Slider_ValueChanged" x:Name="slider"  FlexLayout.Grow="9" WidthRequest="320"/>
+                <Label x:Name="companionlabel" Text="0" FlexLayout.Grow="1" HorizontalOptions="Center" ></Label>
+            </FlexLayout>
+        </VerticalStackLayout>
+
+        
+        <Border
+            x:Name="locationlist"
+            StrokeShape="RoundRectangle 15,15,15,15"
+            Stroke="Transparent"
+            HeightRequest="200"
+            Margin="0,0,0,250"
+            VerticalOptions = "End"
+            Grid.Row="1"    
+        >
+
+            <Border.Shadow>
+                <Shadow Brush="Gray" Opacity="0.7"></Shadow>
+            </Border.Shadow>
+
+
+                <ListView x:Name="listlocation">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell  Height="200">
+                                <HorizontalStackLayout HeightRequest="100">
+                                    <Image Source="placeholders.png" Margin="10,0,0,0"></Image>
+                                    <Label VerticalOptions="Center" TextColor="White" Margin="10,0,0,0" Text="{Binding Text}"></Label>
+                                </HorizontalStackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+               
+        </Border>
+
+ 
+    </Grid>
+</ContentPage>
