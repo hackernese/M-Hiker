@@ -214,6 +214,9 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
 
                     @Override
                     public void agree() {
+
+                        // Loop throlugh every selected item and delete them
+
                         holderlist.stream().filter(obj->obj.isselected).forEach(obj ->{
                             obj.obj.delete();
                         });

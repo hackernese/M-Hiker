@@ -64,6 +64,8 @@ public class ViewHike extends Fragment {
     List<Observation> allobservation;
 
 
+    View emptysection;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,11 +91,22 @@ public class ViewHike extends Fragment {
 
         ObservationCardAdapter adapter =  new ObservationCardAdapter(context, allobservation, this, view);
         observationlist.setAdapter(adapter);
+
+        emptysection = view.findViewById(R.id.emptyob);
+
         adapter.setcallback( new ObservationCardAdapter.Callback() {
             @Override
             public void delete() {
+
+                // After deleting, reset the interface
+
                 adapter.observations = Observation.query("hike_id", ""+hike_id);
                 observationlist.setAdapter(adapter);
+
+                // If no observation is available left, appear the old "Not found" label
+                if(adapter.observations.size()==0){
+                    emptysection.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
