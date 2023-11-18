@@ -140,12 +140,50 @@ public class CreateHikeIndex extends Fragment {
     double new_latitude = 0;
     double new_longtitude = 0;
 
-    private void openconfirmdialog(View view){
+    private void openconfirmdialog(View view, Runnable callback,
+
+                                   String namestr, String locationstr, String datestr, String lengthstr, String difficultstr, String parkingstr, String companionsstr
+                                   ){
         BottomSheetDialog dialog = new BottomSheetDialog(getContext());
         View dialogview = LayoutInflater.from(getContext()).inflate(
                 R.layout.confirmation_bottomsheet,
                 (LinearLayout)view.findViewById(R.id.confirmcontainer)
         );
+
+        // Grabbing some labels
+        TextView name = dialogview.findViewById(R.id.namelabel);
+        TextView location = dialogview.findViewById(R.id.locationlabel);
+        TextView date = dialogview.findViewById(R.id.datelabel);
+        TextView length = dialogview.findViewById(R.id.lengthlabel);
+        TextView difficult = dialogview.findViewById(R.id.difficultylabel);
+        TextView parking = dialogview.findViewById(R.id.parkinglabel);
+        TextView companions = dialogview.findViewById(R.id.companionlabel);
+
+
+        // Setting the texts here
+        name.setText(namestr);
+        location.setText(locationstr);
+        date.setText(datestr);
+        length.setText(lengthstr);
+        difficult.setText(difficultstr);
+        parking.setText(parkingstr);
+        companions.setText(companionsstr);
+
+
+        dialogview.findViewById(R.id.cancelbtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialogview.findViewById(R.id.confirmbtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.run();
+                dialog.dismiss();
+            }
+        });
+
 
         // Setting default value
         dialog.setContentView(dialogview);
@@ -239,14 +277,22 @@ public class CreateHikeIndex extends Fragment {
                     }
 
                     // Create a new hike
-                    Hikes new_hike = new Hikes(
-                            new_name, new_location, new_date, new_length, new_unit, new_difficulty, isparking,
-                            new_description, false, "", new_companions, new_latitude, new_longtitude
-                    );
 
-                    db.insert(new_hike);
-                    Navigation.findNavController(view).navigate(R.id.action_createNewHike_to_homepage);
-                    ToastMessage.success(view, "Successfully insert new record");
+                    openconfirmdialog(view, new Runnable() {
+                        @Override
+                        public void run() {
+                            Hikes new_hike = new Hikes(
+                                    new_name, new_location, new_date, new_length, new_unit, new_difficulty, isparking,
+                                    new_description, false, "", new_companions, new_latitude, new_longtitude
+                            );
+
+                            db.insert(new_hike);
+                            Navigation.findNavController(view).navigate(R.id.action_createNewHike_to_homepage);
+                            ToastMessage.success(view, "Successfully insert new record");
+                        }
+                    }, new_name, new_location, new_date, new_length + "", new_difficulty, isparking ? "Available" : "Not available", new_companions + "" );
+
+
 
                 }else{
                     // Go next

@@ -21,9 +21,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView45">
 
@@ -92,7 +92,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
@@ -101,6 +101,7 @@
             android:showDividers="middle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout5"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
@@ -108,43 +109,65 @@
                 android:id="@+id/namelabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
 
             <TextView
                 android:id="@+id/locationlabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
 
             <TextView
                 android:id="@+id/datelabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
 
             <TextView
                 android:id="@+id/lengthlabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
 
             <TextView
                 android:id="@+id/difficultylabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
 
             <TextView
                 android:id="@+id/parkinglabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
 
             <TextView
                 android:id="@+id/companionlabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textAlignment="textEnd" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,7 +194,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/cancelbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -181,7 +204,7 @@
                     app:cornerRadius="5dp" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/confirmbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
