@@ -80,6 +80,14 @@ public class ImageGridAdapter extends BaseAdapter {
         ImageItem temp = uris.get(i);
         String type = context.getContentResolver().getType(temp.uripath);
 
+
+        if(type==null){
+
+            // Very likely that this was a captured image
+            imageview.setImageURI(temp.uripath);
+            return view;
+        }
+
         if(type.startsWith("video"))
         {
             View layout = view.findViewById(R.id.timestamp_label);
@@ -93,7 +101,7 @@ public class ImageGridAdapter extends BaseAdapter {
             imageview.setImageBitmap(thumbnail);
 
         }else{
-            imageview.setImageURI(uris.get(i).uripath);
+            imageview.setImageURI(temp.uripath);
         }
 
         return view;

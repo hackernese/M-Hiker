@@ -24,7 +24,10 @@ public class MultiChoiceSheetAdapter extends  RecyclerView.Adapter<Choice>{
     public static class Option{
         public String key;
         public boolean value;
+        public int imageid = -1;
     }
+
+    public boolean is_media = false;
 
     List<Option> options = new ArrayList<>();
     List<Choice> choices = new ArrayList<>();
@@ -48,9 +51,19 @@ public class MultiChoiceSheetAdapter extends  RecyclerView.Adapter<Choice>{
     @Override
     public void onBindViewHolder(@NonNull Choice holder, int position) {
 
+        Option op = options.get(position);
+
+
         choices.add(holder);
-        holder.setState(options.get(position).value);
-        holder.text.setText(options.get(position).key);
+        holder.setState(op.value);
+        holder.text.setText(op.key);
+
+        if(op.imageid!=-1){
+            // Set image
+            holder.selecticon.setImageResource(op.imageid);
+            holder.selecticon.setVisibility(View.VISIBLE);
+        }
+
         holder.onclick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

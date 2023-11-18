@@ -111,9 +111,12 @@ public class CreateObservation extends Fragment {
         // Initialize ViewPager2 for sliding contents
         ViewPager2 pager = (ViewPager2) view.findViewById(R.id.createobserveslider);
         ArrayList<Fragment> fragments = new ArrayList<>();
+
+        Fragment mediafragment = new CreateObservationSlideMedia();
+
         fragments.add(new CreateObservationSlideDetails());
         fragments.add(new CreateObservationDate());
-        fragments.add(new CreateObservationSlideMedia());
+        fragments.add(mediafragment);
 
         // Creating an adapter so the PageView2 can work properly
         CreateObservationAdapter adapter = new CreateObservationAdapter(this, fragments);
@@ -202,21 +205,12 @@ public class CreateObservation extends Fragment {
                     return;
                 }
 
-                // Generate faker data first to make sure it works properly
-//                String title = debug.generate_faker_text(10,12);
-//                String category = "Testhike";
-//                String weather = "Rainy";
-//                String date = "11/23/2023";
-//                String time = "11:11";
-//                String comments = debug.generate_faker_text(20, 50);
-
                 // Extracting all exsiting images and video from the media one to put into the ObservationMedia table
                 // First access the Adapter of the Slider first
-                GridView v = pager.findViewById(R.id.imagegrid);
-                ImageGridAdapter adapter = (ImageGridAdapter)v.getAdapter();
+                ImageGridAdapter adapter = ((CreateObservationSlideMedia)mediafragment).adapter;
                 List<ImageItem> medialist = adapter.getItems();
 
-                // COnstruct a new Observation object to add into the database later
+//                 COnstruct a new Observation object to add into the database later
                 Observation newob = new Observation(
                         title,
                         category,
@@ -243,7 +237,7 @@ public class CreateObservation extends Fragment {
                 }
 
                 // Simply navigate back to the hike page
-                getActivity().onBackPressed();
+//                getActivity().onBackPressed();
             }
         });
 

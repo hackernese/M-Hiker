@@ -86,7 +86,7 @@ public class Media extends Fragment {
         img = view.findViewById(R.id.imagemedia);
         video = view.findViewById(R.id.videoView);
 
-        if(media.path.endsWith("jpg")){
+        if(media.path.endsWith("jpg") || media.path.endsWith("png")){
 
             // Images
             img.setImageURI(media.toUri());

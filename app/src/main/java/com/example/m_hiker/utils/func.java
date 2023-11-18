@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -65,6 +67,19 @@ public class func {
                 }
             }
         });
+    }
+
+    public static String getfilename_based_on_date(){
+
+        // Extract current time
+        LocalDateTime dt = LocalDateTime.now();
+
+        // Build a formatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH:mm:ss:SSS");
+
+        // FOrmat it
+        return dt.format(formatter);
+
     }
 
 

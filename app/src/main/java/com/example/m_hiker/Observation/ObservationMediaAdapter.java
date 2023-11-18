@@ -59,7 +59,7 @@ public class ObservationMediaAdapter extends RecyclerView.Adapter<ObservationMed
 
         ObservationMedia mediafile = items.get(position);
 
-        if(mediafile.path.endsWith(".jpg"))
+        if(mediafile.path.endsWith(".jpg") || mediafile.path.endsWith("png"))
             holder.image.setImageURI(mediafile.toUri());
         else{
             // Extracting the thumbnail of the video as image

@@ -15,6 +15,7 @@
         <item name="dragOverwritebar">@color/dragbarnight</item>
 
     </style>
+    <style name="Theme.MHiker" parent="Base.Theme.MHiker" />
 
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>

@@ -1,7 +1,9 @@
 package com.example.m_hiker;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -21,6 +23,13 @@ import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.utils.func;
 import com.example.m_hiker.utils.storex;
 import com.karumi.dexter.BuildConfig;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.BasePermissionListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        func.getcoords("Wall Streets");
+        Log.d("debug", func.getfilename_based_on_date());
+
+//        func.getcoords("Wall Streets");
 
         // Enabling Places API
 //        Places.initialize(getApplicationContext(), storex.apikey);
@@ -85,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.setType("image/*");
 //        Intent share = Intent.createChooser(intent, "Share via");
 //        startActivity(share);
+
     }
 
     private String getApiKeyFromManifest() {

@@ -26,11 +26,19 @@ public class MultiChoiceSheet{
 
     String title = "Untitled";
 
+    boolean is_media = false; // Set this to true and it will show icons on each Choice
+    public MultiChoiceSheet setType(boolean type){
+        this.is_media = type;
+        return this;
+    }
+
     public MultiChoiceSheet(View view, Context context, String title) {
         this.view = view;
         this.context = context;
         this.title = title;
     }
+
+    MultiChoiceSheetAdapter adapter;
 
     List<MultiChoiceSheetAdapter.Option> options = new ArrayList<>();
 
@@ -45,17 +53,31 @@ public class MultiChoiceSheet{
         options.add(op);
         return this;
     }
+    public MultiChoiceSheet option(String key, int imageid){
+        MultiChoiceSheetAdapter.Option op = new MultiChoiceSheetAdapter.Option();
+        op.key = key;
+        op.value = false;
+        op.imageid = imageid;
+        options.add(op);
+        return this;
+    }
+
+
 
     public static interface Callback{
         void onchange(String key, boolean value);
     }
 
+    public BottomSheetDialog dialog;
+
     public void show(Callback callback){
-        BottomSheetDialog dialog = new BottomSheetDialog(context);
+        dialog = new BottomSheetDialog(context);
         View dialogview = LayoutInflater.from(context).inflate(
                 R.layout.bottomsheet_multichoice,
                 (LinearLayout)view.findViewById(R.id.containeritems)
         );
+
+
 
         ( (TextView)dialogview.findViewById(R.id.titlesheet) ).setText(title);
 
@@ -64,12 +86,13 @@ public class MultiChoiceSheet{
         dialog.show();
 
         RecyclerView recyler;
-        MultiChoiceSheetAdapter adapter;
+
 
         recyler = dialogview.findViewById(R.id.listitems);
         recyler.setLayoutManager(new LinearLayoutManager(context));
         adapter = new MultiChoiceSheetAdapter(context, options, callback);
 
+        adapter.is_media = is_media;
         recyler.setAdapter(adapter);
 
     }

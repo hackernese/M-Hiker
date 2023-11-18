@@ -88,7 +88,7 @@ public class ObservationThumbnail extends Fragment {
         ImageView image = view.findViewById(R.id.obimage);
 
 
-        if(media.path.endsWith("jpg")){
+        if(media.path.endsWith("jpg") || media.path.endsWith("png")){
             image.setImageURI(uri);
         }else{
             mediasetter.setDataSource(getContext(), media.toUri());
