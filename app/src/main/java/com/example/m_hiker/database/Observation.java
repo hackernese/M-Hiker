@@ -82,6 +82,8 @@ public class Observation implements CommonTable {
         }
     };
 
+    public boolean is_new_change = false;
+
     public ParcelObservation getParcelObject(){
         return (new ParcelObservation()).setobject(this);
     }

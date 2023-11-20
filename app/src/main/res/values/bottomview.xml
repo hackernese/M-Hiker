@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    Adding some styles to overwrite the global BottomNavigationView's styles-->
+<!--
+        GOD THIS FREAKING POST SAVED MY TIME ON THIS :
+        https://stackoverflow.com/questions/70397792/how-to-change-the-color-of-active-indicator-bottombavigationview-material-you-m
+
+        RESPE$CT !!!
+
+        -->
+<!--    	#ffe8def8-->
+<!--    #FACEE9D5-->
+
+    <style name="BottomViewIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#3F8EBA8B</item>
+    </style>
+    <style name="BottomViewIndicatorStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemActiveIndicatorStyle">@style/BottomViewIndicator</item>
+        <item name="itemTextColor">?attr/textCoreColor</item>
+    </style>
+
+</resources>

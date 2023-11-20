@@ -18,10 +18,10 @@
         <item name="dragOverwritebar">@color/dragbarnight</item>
         <!--        <item name="popupBackground">@color/white</item>-->
 
+        <item name="itemIconTint">@color/primary</item>
+        <item name="itemTextColor">@color/white</item>
+
     </style>
-
-    <style name="Theme.MHiker" parent="Base.Theme.MHiker" />
-
 
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>

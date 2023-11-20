@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FloatingButtonCustom" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">@color/primary</item>
+        <item name="shapeAppearanceOverlay">@style/little_pointy</item>
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="little_pointy">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="completeround">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+
+</resources>

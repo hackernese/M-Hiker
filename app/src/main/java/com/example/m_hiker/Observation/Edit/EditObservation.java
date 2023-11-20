@@ -298,10 +298,7 @@ public class EditObservation extends Fragment {
                 String time = timebox.getText().toString().trim();
                 String weather = weatherbox.getText().toString().trim();
                 String comment = commentbox.getText().toString().trim();
-
-                Log.d("debug", cat);
-
-                View errorview =
+                                View errorview =
                         title.length()==0 ? titlebox :
                         time.length()==0 ? timebox :
                         date.length()==0 ? datebox : null;
@@ -328,6 +325,14 @@ public class EditObservation extends Fragment {
                 db.update(object, params);
 
                 ToastMessage.success(view, "Successfully updated information");
+
+                object.is_new_change = true;
+                object.category = cat;
+                object.title = title;
+                object.weather = weather;
+                object.comments = comment;
+                object.date = date;
+                object.time = time;
 
             }
         });
@@ -377,6 +382,7 @@ public class EditObservation extends Fragment {
 
                 ToastMessage.success(view, "Successfully added new media files");
 
+                object.is_new_change = true;
             }
 
         });

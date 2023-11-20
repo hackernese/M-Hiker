@@ -32,58 +32,59 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:tint="?attr/textCoreColor"
-
             android:id="@+id/deletebtnob"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="@drawable/ripple_effect"
             android:padding="10dp"
             android:src="@drawable/delete"
+            android:tint="?attr/textCoreColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <ImageButton
-            android:tint="?attr/textCoreColor"
-
             android:id="@+id/editbtnob"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_effect"
             android:padding="10dp"
             android:src="@drawable/edit"
+            android:tint="?attr/textCoreColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/deletebtnob"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <ImageButton
-            android:tint="?attr/textCoreColor"
-
             android:id="@+id/sharebtnob"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_effect"
             android:padding="10dp"
             android:src="@drawable/share"
+            android:tint="?attr/textCoreColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/editbtnob"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
-        <ImageButton                    android:tint="?attr/textCoreColor"
-
-
+        <ImageButton
             android:id="@+id/backbtnob"
+
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:background="@drawable/ripple_effect"
             android:padding="10dp"
             android:src="@drawable/arrow_back"
+            android:tint="?attr/textCoreColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -126,10 +127,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:tint="?attr/textCoreColor"
                     android:id="@+id/imageView6"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -155,10 +156,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:tint="?attr/textCoreColor"
                     android:id="@+id/imageView236"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -185,11 +186,11 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:tint="?attr/textCoreColor"
-
                     android:id="@+id/imageView116"
+
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -217,11 +218,11 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:tint="?attr/textCoreColor"
-
                     android:id="@+id/imageVie333w6"
+
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -282,6 +283,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -293,5 +295,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notfoundsection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout15"
+        app:layout_constraintVertical_bias="0.41000003">
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:alpha="0.3"
+            android:src="@drawable/imagefill"
+            android:tint="?attr/textCoreColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.5"
+            android:fontFamily="@font/roboto"
+            android:text="No media was added."
+            android:textSize="12dp"
+            android:tint="?attr/textCoreColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

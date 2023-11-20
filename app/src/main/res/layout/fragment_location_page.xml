@@ -64,9 +64,9 @@
                 <EditText
                     android:id="@+id/searchlocation"
                     android:layout_width="0dp"
-                    android:layout_height="49dp"
+                    android:layout_height="0dp"
                     android:background="#00000000"
-                    android:ems="10"
+                    android:ellipsize="end"
                     android:fontFamily="@font/roboto"
                     android:hint="Location"
                     android:inputType="text"
@@ -90,7 +90,6 @@
                     app:layout_constraintVertical_bias="0.562" />
 
                 <ImageButton
-                    android:tint="?attr/textCoreColor"
                     android:id="@+id/voice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,6 +97,7 @@
                     android:background="@drawable/ripple_effect"
                     android:padding="6dp"
                     android:src="@drawable/baseline_mic_24"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -128,10 +128,10 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintVertical_bias="0.0"
             tools:context=".MapsActivity" />
 
         <androidx.cardview.widget.CardView

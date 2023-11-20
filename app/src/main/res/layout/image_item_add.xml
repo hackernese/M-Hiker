@@ -20,7 +20,7 @@
         />
 
     <ImageView
-        android:tint="?attr/popupBackground"
+        android:tint="?attr/textCoreColor"
         android:id="@+id/imageView15"
         android:layout_width="35dp"
         android:layout_height="35dp"

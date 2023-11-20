@@ -16,7 +16,7 @@ public class ImageItem {
 
     public String path;
     public Uri uripath;
-    Boolean is_add = false;
+    public Boolean is_add = false;
 
     public ImageItem(String name){
         this.path = name;

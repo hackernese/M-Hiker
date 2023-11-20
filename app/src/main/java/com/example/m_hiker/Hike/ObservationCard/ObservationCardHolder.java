@@ -3,6 +3,7 @@ package com.example.m_hiker.Hike.ObservationCard;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,8 +21,6 @@ public class ObservationCardHolder extends RecyclerView.ViewHolder {
 
 
     View self;
-    ImageButton back;
-    ImageButton next;
 
     public int id; // Hike id
 
@@ -34,7 +33,6 @@ public class ObservationCardHolder extends RecyclerView.ViewHolder {
     ArrayList<Fragment> fragments = new ArrayList<>();
     View parentView;
 
-    Observation object;
 
     public void setpager(Observation ob, Fragment activity){
         ObservationThumbnailAdapter adapter = new ObservationThumbnailAdapter(activity, fragments);
@@ -43,9 +41,7 @@ public class ObservationCardHolder extends RecyclerView.ViewHolder {
 
     FragmentManager manager;
 
-
-    ImageButton bookmark;
-    ImageButton bookmarkselected;
+    public ImageView placeholder;
 
     public ObservationCardHolder setfragmentmanager(FragmentManager frag){
         this.manager = frag;
@@ -58,6 +54,7 @@ public class ObservationCardHolder extends RecyclerView.ViewHolder {
         obpager = itemView.findViewById(R.id.observationpager);
         category = itemView.findViewById(R.id.categoryobcard);
         title = itemView.findViewById(R.id.titleobcard);
+        placeholder = itemView.findViewById(R.id.obcardimage);
 
 
         itemView.findViewById(R.id.obcardback).setOnClickListener(new View.OnClickListener() {

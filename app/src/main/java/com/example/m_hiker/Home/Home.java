@@ -477,7 +477,7 @@ public class Home extends Fragment {
                     public void accept() {
                         dialogmanager.length(search_length, search_unit);
                     }
-                }, !(search_length > 0));
+                }, search_length > 0);
             }
         });
 

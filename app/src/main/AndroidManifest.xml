@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA"/>
-
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
@@ -51,13 +50,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}"/>
         <activity
+            android:screenOrientation="portrait"
             android:name=".MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".IntroPage"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">

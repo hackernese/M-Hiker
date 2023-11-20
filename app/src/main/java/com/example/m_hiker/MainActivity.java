@@ -51,11 +51,6 @@ public class MainActivity extends AppCompatActivity {
         ToastMessage.context = getApplicationContext();
         ToastMessage.inflater = getLayoutInflater();
 
-//        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//        intent.setType("image/* video/*");
-//        startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
-
         // Creating media folder
         storex.apikey = getApiKeyFromManifest();
         storex.abpath = getFilesDir() + File.separator;

@@ -30,45 +30,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <ImageView
-            android:id="@+id/image11212"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            android:rotation="0"
-            android:src="@drawable/chevron"
-            android:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
-
-        <TextView
-            android:id="@+id/textView291"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_medium"
-            android:text="Back"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image11212"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
-
         <Button
             android:id="@+id/prevslide"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
             android:background="@drawable/ripple_slight_round"
+            android:drawableLeft="@drawable/baseline_chevron_left_24"
+            android:drawableTint="@color/white"
+            android:padding="0dp"
+            android:text="Back"
+            android:textAlignment="viewStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -82,43 +58,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView29"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_medium"
-            android:text="Next"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/image1221"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/image1221"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            android:rotation="180"
-            android:src="@drawable/chevron"
-            android:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView29"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
-
         <Button
             android:id="@+id/nextslide"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
             android:background="@drawable/ripple_slight_round"
+            android:drawableRight="@drawable/baseline_chevron_right_24"
+            android:drawableTint="@color/white"
+            android:padding="0dp"
+            android:text="Next"
+            android:textAlignment="textEnd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

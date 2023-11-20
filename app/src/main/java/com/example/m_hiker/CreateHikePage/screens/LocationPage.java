@@ -196,6 +196,10 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
 
 
     private void getCurrentLocation(){
+
+        if(editbox.getText().toString().trim().length() > 0)
+            return;
+
         Task<Location> task = locationclient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -205,32 +209,34 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
                 if(location==null)
                     return;
 
-                Geocoder coder = new Geocoder(getContext());
+                try{
+                    Geocoder coder = new Geocoder(getContext());
 
-                double lat = location.getLatitude();
-                double long_ = location.getLongitude();
-                coder.getFromLocation(lat, long_, 1, new Geocoder.GeocodeListener() {
-                    @Override
-                    public void onGeocode(@NonNull List<Address> list) {
+                    double lat = location.getLatitude();
+                    double long_ = location.getLongitude();
+                    coder.getFromLocation(lat, long_, 1, new Geocoder.GeocodeListener() {
+                        @Override
+                        public void onGeocode(@NonNull List<Address> list) {
 
-                        set_chosen_location = true;
+                            set_chosen_location = true;
 
-                        String addr = list.get(0).getAddressLine(0);
+                            String addr = list.get(0).getAddressLine(0);
 
-                        editbox.setText(addr);
-                        callback.location(addr, lat, long_);
-                    }
-                });
+                            callback.location(addr, lat, long_);
+                            editbox.setText(addr);
+                        }
+                    });
 
-                Log.d("debug", location.toString());
-//                        .url("https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyDJtdZZqKshP83NfY23NU790t2JFSIIVLM&address=Hue")
-//                        .build();
-                // Clear old setting
-                setlocation(location.getLatitude(), location.getLongitude());
+                    Log.d("debug", location.toString());
 
+                    // Clear old setting
+                    setlocation(location.getLatitude(), location.getLongitude());
+                }catch (Exception e){
+                    Log.d("debug" , "Error: issues happened during latest location setting : " + e.toString());
+                    e.printStackTrace();
+                }
             }
         });
-
     }
 
     @Override
@@ -248,7 +254,14 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
             .withListener(new PermissionListener() {
                 @Override
                 public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                    getCurrentLocation();
+                    try{
+                        getCurrentLocation();
+                        Log.d("debug", "successfully extracted locations");
+                    }catch (Exception e){
+                        Log.d("debug", "Error while getting location");
+                        e.printStackTrace();
+                    }
+
                     Log.d("debug", "requested completed");
                 }
 
@@ -275,6 +288,8 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
 
     private boolean set_chosen_location = false;
 
+    ImageButton clearbtn;
+    ImageButton voicebtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -285,11 +300,11 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
 
         editbox  = ((EditText)view.findViewById(R.id.searchlocation));
 
-        // Animation
-        Animation slidedown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-        Animation slideup = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-        Animation fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
-        Animation fadeout = AnimationUtils.loadAnimation(getContext(), R.anim.fadeout);
+//        // Animation
+//        Animation slidedown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+//        Animation slideup = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+//        Animation fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+//        Animation fadeout = AnimationUtils.loadAnimation(getContext(), R.anim.fadeout);
 
         // Common variables
         Geocoder geocoder = new Geocoder(getContext());
@@ -298,6 +313,7 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
         RecyclerView localist = view.findViewById(R.id.locationlist); // The recyclerview
         View locationlistview = view.findViewById(R.id.locationlistcard); // The card containing the recylerview
         ArrayList<LocationItem> l = new ArrayList<>();
+
 
         l.add(new LocationItem());
         LocationAdapter adapter = new LocationAdapter(getContext(), l).setcallback(new LocationAdapter.Callback() {
@@ -322,8 +338,8 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
 
 
         // Clear button
-        ImageButton clearbtn = view.findViewById(R.id.clearbutton);
-        ImageButton voicebtn = view.findViewById(R.id.voice);
+        clearbtn = view.findViewById(R.id.clearbutton);
+        voicebtn = view.findViewById(R.id.voice);
         clearbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -350,23 +366,27 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                String ret = charSequence.toString();
+
                 if(set_chosen_location){
+
+                    // If the location is nopt empty, set the close button first
+
+                    Log.d("debug", "HERE BUDDY");
+
+                    if(ret.length() > 0){
+                        clearbtn.setVisibility(View.VISIBLE);
+                        voicebtn.setVisibility(View.GONE);
+                    }
+
                     set_chosen_location = false;
                     return;
                 }
 
-                String ret = charSequence.toString();
-
                 if(ret.length()==0){
-
                     callback.location("", 0,0);
-
                     clearbtn.setVisibility(View.GONE);
-                    voicebtn.setVisibility(View.VISIBLE);
-                    locationlistview.setVisibility(View.INVISIBLE);
                 }else{
-                    clearbtn.setVisibility(View.VISIBLE);
-                    voicebtn.setVisibility(View.GONE);
                     locationlistview.setVisibility(View.VISIBLE);
                 }
 
@@ -379,13 +399,17 @@ public class LocationPage extends Fragment implements OnMapReadyCallback {
                     e.printStackTrace();
                     // Handle exception
                 }
-
-
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if(editable.toString().trim().length() > 0){
+                    clearbtn.setVisibility(View.VISIBLE);
+                    voicebtn.setVisibility(View.GONE);
+                }else{
+                    clearbtn.setVisibility(View.GONE);
+                    voicebtn.setVisibility(View.VISIBLE);
+                }
             }
         });
 

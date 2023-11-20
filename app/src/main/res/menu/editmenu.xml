@@ -4,13 +4,16 @@
     <item
         android:id="@+id/generalitem"
         android:icon="@drawable/settings_fill0_wght400_grad0_opsz24"
+        android:iconTint="?attr/textCoreColor"
         android:title="General" />
     <item
         android:id="@+id/locationitem"
         android:icon="@drawable/locationempty"
+        android:iconTint="?attr/textCoreColor"
         android:title="Location" />
     <item
         android:id="@+id/optionalitem"
         android:icon="@drawable/pending"
+        android:iconTint="?attr/textCoreColor"
         android:title="Optional" />
 </menu>

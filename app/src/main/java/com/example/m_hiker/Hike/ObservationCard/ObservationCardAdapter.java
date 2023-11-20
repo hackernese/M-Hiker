@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.m_hiker.Dialogs.SocialMedia;
 import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.Observation;
+import com.example.m_hiker.database.ObservationMedia;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.lang.reflect.Array;
@@ -66,12 +68,22 @@ public class  ObservationCardAdapter extends RecyclerView.Adapter<ObservationCar
         return new ObservationCardHolder(inflated_view);
     }
 
+    ImageView placeholder;
+
     @Override
     public void onBindViewHolder(@NonNull ObservationCardHolder holder, int position) {
 
         Observation ob  = observations.get(position);
         holder.setfragmentmanager(activity.getParentFragmentManager());
         holder.setpager(ob, activity);
+
+
+        // Extracting all medias first
+        ArrayList<ObservationMedia> allmedias = ob.getmedias();
+        if(allmedias.size() > 0){
+            holder.placeholder.setVisibility(View.GONE);
+        }
+
 
         holder.parentView = parentView;
         holder.id = ob.id;
@@ -128,7 +140,7 @@ public class  ObservationCardAdapter extends RecyclerView.Adapter<ObservationCar
                     public void onClick(View view) {
 
                         ArrayList<String> uris = new ArrayList<>();
-                        ob.getmedias().forEach(e->{
+                        allmedias.forEach(e->{
                             uris.add(e.path);
                         });
 
@@ -165,7 +177,7 @@ public class  ObservationCardAdapter extends RecyclerView.Adapter<ObservationCar
 
         // Creating and binding the ViewPager2 inside of the card for swiping
         ArrayList<Fragment> fragments = new ArrayList<>();
-        ob.getmedias().forEach(observationMedia -> {
+        allmedias.forEach(observationMedia -> {
             Log.d("debug", observationMedia.path);
             fragments.add( ( new ObservationThumbnail() ).setmedia(observationMedia));
         });

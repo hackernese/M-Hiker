@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.m_hiker.Hike.ObservationCard.ObservationCardAdapter;
 import com.example.m_hiker.R;
 import com.example.m_hiker.database.Observation;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
@@ -112,6 +114,24 @@ public class ViewHike extends Fragment {
             @Override
             public void share() {
 
+            }
+        });
+
+        // Access information of this specific hike
+        view.findViewById(R.id.accessinfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+                View dialogview = LayoutInflater.from(getContext()).inflate(
+                        R.layout.info_checker_bottom_menu,
+                        (LinearLayout)view.findViewById(R.id.infocontainer)
+
+
+                );
+
+                // Setting default value
+                dialog.setContentView(dialogview);
+                dialog.show();
             }
         });
 

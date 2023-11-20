@@ -55,9 +55,9 @@
         app:borderWidth="0dp"
         app:elevation="4dp"
         app:fabSize="normal"
+        app:shapeAppearanceOverlay="@style/completeround"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -80,20 +80,21 @@
             android:visibility="visible">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-
+                app:itemBackground="@android:color/transparent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
+                app:labelVisibilityMode="labeled"
                 app:menu="@menu/longhold">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/editoption"
@@ -112,6 +113,7 @@
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:src="@drawable/edit"
+                            android:tint="?attr/textCoreColor"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
@@ -146,6 +148,7 @@
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:src="@drawable/open_in_new_fill0_wght400_grad0_opsz24"
+                            android:tint="?attr/textCoreColor"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
@@ -181,6 +184,7 @@
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:src="@drawable/delete"
+                            android:tint="?attr/textCoreColor"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
@@ -207,7 +211,7 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationViewHome"
-
+            android:background="?android:attr/windowBackground"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="visible"
@@ -237,6 +241,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -314,6 +319,7 @@
                 android:background="@drawable/ripple_effect"
                 android:padding="5dp"
                 android:src="@drawable/x"
+                android:tint="?attr/textCoreColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -374,10 +380,10 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:tint="?attr/textCoreColor"
                     android:layout_width="35dp"
                     android:layout_height="40dp"
                     android:src="@drawable/logodark"
+                    android:tint="?attr/textCoreColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -495,12 +501,14 @@
 
                         <ImageButton
                             android:id="@+id/closesearch"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:src="@drawable/x"
+                            android:tint="?attr/textCoreColor"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -514,6 +522,7 @@
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:src="@drawable/baseline_mic_24"
+                            android:tint="?attr/textCoreColor"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -573,9 +582,9 @@
                         app:checkedIcon="@drawable/addphoto"
                         app:checkedIconVisible="true"
                         app:chipIcon="@drawable/baseline_calendar_today_24"
+                        app:chipIconTint="?attr/textCoreColor"
                         app:chipStartPadding="5dp"
                         app:closeIcon="@drawable/backarrow"
-                        app:closeIconTint="#000000"
                         app:closeIconVisible="true" />
 
                     <com.google.android.material.chip.Chip
@@ -592,9 +601,9 @@
                         app:checkedIcon="@drawable/addphoto"
                         app:checkedIconVisible="true"
                         app:chipIcon="@drawable/location"
+                        app:chipIconTint="?attr/textCoreColor"
                         app:chipStartPadding="5dp"
                         app:closeIcon="@drawable/backarrow"
-                        app:closeIconTint="#000000"
                         app:closeIconVisible="true"
                         tools:text="Location" />
 
@@ -611,9 +620,10 @@
                         android:textSize="11dp"
                         app:checkedIcon="@drawable/addphoto"
                         app:checkedIconVisible="true"
+                        app:chipIconTint="?attr/textCoreColor"
                         app:chipStartPadding="5dp"
                         app:closeIcon="@drawable/backarrow"
-                        app:closeIconTint="#000000"
+                        app:closeIconTint="?attr/textCoreColor"
                         app:closeIconVisible="true" />
 
                 </LinearLayout>

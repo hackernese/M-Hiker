@@ -189,6 +189,7 @@
                 android:background="@drawable/ripple_effect"
                 android:padding="5dp"
                 android:src="@drawable/plus2"
+                android:tint="?attr/textCoreColor"
                 app:layout_constraintBottom_toTopOf="@+id/editmedia"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -264,10 +265,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/categorybox"
-                    android:drawableTint="?attr/textCoreColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/backarrow"
+                    android:drawableTint="?attr/textCoreColor"
                     android:hint="Category" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -295,9 +296,9 @@
                     android:id="@+id/timebox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableTint="?attr/textCoreColor"
-
                     android:drawableEnd="@drawable/clock"
+
+                    android:drawableTint="?attr/textCoreColor"
                     android:hint="Time" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -316,9 +317,9 @@
                     android:id="@+id/datebox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableTint="?attr/textCoreColor"
-
                     android:drawableEnd="@drawable/baseline_calendar_today_24"
+
+                    android:drawableTint="?attr/textCoreColor"
                     android:hint="Date" />
 
             </com.google.android.material.textfield.TextInputLayout>

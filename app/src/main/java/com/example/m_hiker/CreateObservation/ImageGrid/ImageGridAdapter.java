@@ -33,10 +33,29 @@ public class ImageGridAdapter extends BaseAdapter {
     }
 
     public void updateItems(ArrayList<ImageItem> items){
+
         this.uris = items;
         this.original_uris =  new ArrayList<>(items);
-        if(!this.uris.isEmpty())
-            this.uris.add((new ImageItem()).setIsAdd(true));
+
+//        Log.d("debug", this.uris.size() + "");
+//
+//        // If the url lists
+//        if(!this.uris.isEmpty()){
+//            // Readding
+//
+//            for (ImageItem imageItem : this.uris) {
+//
+//                if(imageItem.is_add)
+//                    this.uris.remove(imageItem);
+//
+////                Log.d("debug", imageItem.is_add.toString());
+//            }
+//            this.uris.add((new ImageItem()).setIsAdd(true));
+//
+//        }
+
+        this.notifyDataSetChanged();
+
     }
 
     public ImageGridAdapter(Context context, ArrayList<ImageItem> uris, View.OnClickListener launch){
@@ -48,7 +67,13 @@ public class ImageGridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return uris.size();
+
+        int i = uris.size();
+
+        if(i==0)
+            return 0;
+
+        return uris.size() + 1;
     }
 
     @Override
@@ -63,17 +88,21 @@ public class ImageGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-
         if (inflater == null)
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (view == null)
-            view = inflater.inflate(R.layout.image_item, null);
 
-        if (uris.get(i).is_add) {
+        if(i==uris.size()){
+
+
+
+            Log.d("debug", "dadawdawd");
             view = inflater.inflate(R.layout.image_item_add, null);
             view.setOnClickListener(launch);
             return view;
         }
+        if (view == null)
+            view = inflater.inflate(R.layout.image_item, null);
+
 
         ImageView imageview = view.findViewById(R.id.card_picture);
 
@@ -82,7 +111,6 @@ public class ImageGridAdapter extends BaseAdapter {
 
 
         if(type==null){
-
             // Very likely that this was a captured image
             imageview.setImageURI(temp.uripath);
             return view;

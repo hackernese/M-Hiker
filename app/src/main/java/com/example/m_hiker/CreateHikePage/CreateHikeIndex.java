@@ -77,31 +77,31 @@ public class CreateHikeIndex extends Fragment {
     }
 
 
-    private void create_hike(){
-
-        // The following lines are for debugging only, not for production
-        String name = debug.generate_faker_text(5,10);
-        String location = "National park, Vietnam";
-        String date = Integer.toString(debug.generate_faker_int(1,30)) + "/" + Integer.toString(debug.generate_faker_int(1,12)) + "/" + "2020";
-        Integer length = debug.generate_faker_int(1,10);
-        String unit = "km";
-        Integer companion = debug.generate_faker_int(1,20);
-        String level = "hard";
-        Boolean parking = true;
-        String comment = debug.generate_faker_text(10, 50);
-        double lat = (double)debug.generate_faker_int(100,1000);
-        double long_ = (double)debug.generate_faker_int(100,1000);
-        Boolean islove = false;
-        String thumbnail_path = "";
-
-        // Create a new hike
-        Hikes new_hike = new Hikes(
-                name, location, date, length, unit, level, parking, comment, islove, thumbnail_path, companion, lat, long_
-        );
-
-        db.insert(new_hike);
-
-    }
+//    private void create_hike(){
+//
+//        // The following lines are for debugging only, not for production
+//        String name = debug.generate_faker_text(5,10);
+//        String location = "National park, Vietnam";
+//        String date = Integer.toString(debug.generate_faker_int(1,30)) + "/" + Integer.toString(debug.generate_faker_int(1,12)) + "/" + "2020";
+//        Integer length = debug.generate_faker_int(1,10);
+//        String unit = "km";
+//        Integer companion = debug.generate_faker_int(1,20);
+//        String level = "hard";
+//        Boolean parking = true;
+//        String comment = debug.generate_faker_text(10, 50);
+//        double lat = (double)debug.generate_faker_int(100,1000);
+//        double long_ = (double)debug.generate_faker_int(100,1000);
+//        Boolean islove = false;
+//        String thumbnail_path = "";
+//
+//        // Create a new hike
+//        Hikes new_hike = new Hikes(
+//                name, location, date, length, unit, level, parking, comment, islove, thumbnail_path, companion, lat, long_
+//        );
+//
+//        db.insert(new_hike);
+//
+//    }
 
     ImageView bullet1;
     ImageView bullet2;
@@ -214,8 +214,6 @@ public class CreateHikeIndex extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_create_hike_index, container, false);
 
-//        openconfirmdialog(view);
-
         // Grabbing the ViewPager2
         ViewPager2 viewpager = view.findViewById(R.id.slideshow);
 
@@ -276,7 +274,7 @@ public class CreateHikeIndex extends Fragment {
                         return;
                     }
 
-                    // Create a new hike
+                    // Popping a confirmation form first to create a new hike
 
                     openconfirmdialog(view, new Runnable() {
                         @Override
@@ -294,7 +292,8 @@ public class CreateHikeIndex extends Fragment {
 
 
 
-                }else{
+                }
+                else{
                     // Go next
                     viewpager.setCurrentItem(viewpager.getCurrentItem()+1, true);
                 }
@@ -368,7 +367,7 @@ public class CreateHikeIndex extends Fragment {
                     text.setTextColor(getResources().getColor(R.color.primary));
                 }else{
                     ((TextView)view.findViewById(R.id.nextbtn)).setText("Next");
-                    text.setTextColor(getResources().getColor(R.color.black));
+//                    text.setTextColor(getResources().getColor(R.color.black));
 
                 }
             }
@@ -385,13 +384,25 @@ public class CreateHikeIndex extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                checkbullet(position);
+                try{
+                    checkbullet(position);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("deug", "Error when switching slides");
+                }
+
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
-                check_last_slide.run();
+                try{
+                    check_last_slide.run();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("deug", "Error when switching slides");
+                }
             }
         });
 

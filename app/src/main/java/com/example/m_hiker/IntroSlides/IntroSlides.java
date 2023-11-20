@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.m_hiker.IntroSlides.screens.Slide1;
 import com.example.m_hiker.IntroSlides.screens.Slide2;
@@ -95,12 +96,29 @@ public class IntroSlides extends Fragment {
             }
         });
 
-        view.findViewById(R.id.nextslide).setOnClickListener(new View.OnClickListener() {
+
+        Button next = view.findViewById(R.id.nextslide);
+
+        viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                if(position==2)
+                    next.setVisibility(View.GONE);
+                else
+                    next.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int item = viewpager.getCurrentItem();
-                if(item==2)
+                if(item==2) {
                     return;
+                }
                 viewpager.setCurrentItem(item+1, true);
             }
         });

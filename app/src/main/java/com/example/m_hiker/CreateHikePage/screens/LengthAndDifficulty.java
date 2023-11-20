@@ -168,17 +168,22 @@ public class LengthAndDifficulty extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                String text = charSequence.toString().trim();
+                if(text.length()==0) {
+                    length = 0;
+                    call.run();
+                    return;
+                }
+
                 try {
-                    int temp = Integer.parseInt(charSequence.toString().trim());
+                    int temp = Integer.parseInt(text);
                     if(temp > 0) {
                         length = temp;
                         call.run();
-
-                    }else
-
-                        lengthbox.setText("");
+                    }
                 }catch (NumberFormatException e){
-                    lengthbox.setText("");
+                    e.printStackTrace();
                 }
             }
 
@@ -212,7 +217,16 @@ public class LengthAndDifficulty extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                companions = Integer.parseInt(charSequence.toString().trim());
+
+                String data = charSequence.toString().trim();
+
+                if(data.length()==0){
+                    companions = 0;
+                    call.run();
+                    return;
+                }
+
+                companions = Integer.parseInt(data);
                 call.run();
             }
 

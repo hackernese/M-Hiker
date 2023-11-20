@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -99,6 +100,10 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
 
     private void checkbiggerthan1select(){
 
+        holderlist.stream().forEach(e ->{
+            Log.d("debug", e.isselected + "");
+        });
+
         long itemscount = holderlist.stream().filter(obj -> obj.isselected).count();
         itemselected.setText(itemscount + " items selected");
 
@@ -163,6 +168,7 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
         holder.description.setText(item.description);
         holder.title.setText(item.name);
 
+
         if(item.thumbnail_id != 0){
 
             Log.d("debug", "Found observation media id for hike " + item.id  + " = " + item.thumbnail_id);
@@ -178,6 +184,7 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
         editbtn = parentView.findViewById(R.id.editoption);
         openbtn = parentView.findViewById(R.id.opensection);
         deletebtn = parentView.findViewById(R.id.deletesection);
+        ImageButton close = parentView.findViewById(R.id.closeselect);
 
         parentView.findViewById(R.id.editbtnhike).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,12 +223,12 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
                     public void agree() {
 
                         // Loop throlugh every selected item and delete them
-
                         holderlist.stream().filter(obj->obj.isselected).forEach(obj ->{
                             obj.obj.delete();
                         });
                         callback.onchange();
                         ToastMessage.success(parentView, "Successfully deleted selected items");
+                        close.callOnClick();
                     }
                 });
                 dialog.show(parentManager, "DDDD");
@@ -243,13 +250,21 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
 
         Animation slideup = AnimationUtils.loadAnimation(context, R.anim.slide_up_anime);
 
+
+        // Select all button
         selectallbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isselectedall = !isselectedall;
+
+
                 holderlist.forEach((c)->{
-                    c.showfavorite(false).showcheckedmark(true);
+                    if(isselectedall)
+                        c.showfavorite(false).showcheckedmark(true);
+                    else
+                        c.showfavorite(false).showunchecked(false);
                 });
+
                 selecticon.setImageResource(isselectedall ? R.drawable.select_check_box_fill0_wght400_grad0_opsz24
                         : R.drawable.baseline_crop_square_24
                         );
@@ -258,7 +273,7 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
         });
 
         // CLose button for selected items
-        parentView.findViewById(R.id.closeselect).setOnClickListener(new View.OnClickListener() {
+        close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

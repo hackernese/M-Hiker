@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,17 @@ import android.view.animation.AnimationUtils;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.m_hiker.Dialogs.DeleteWarning;
 import com.example.m_hiker.Dialogs.ToastMessage;
 import com.example.m_hiker.R;
 import com.example.m_hiker.Dialogs.SocialMedia;
 import com.example.m_hiker.database.Observation;
+import com.example.m_hiker.database.ObservationMedia;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -79,6 +83,8 @@ public class ViewObservation extends Fragment {
     TextView category;
     TextView title;
 
+    View notfoundsection;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,10 +93,14 @@ public class ViewObservation extends Fragment {
         Context context = getContext();
         View view = inflater.inflate(R.layout.fragment_view_observation, container, false);
 
+
         Bundle bundle = getArguments();
         Observation ob = ((Observation.ParcelObservation)bundle.getParcelable("object")).object;
         RecyclerView grid = view.findViewById(R.id.medialist);
         View overlay = view.findViewById(R.id.overlaytop123213213);
+
+        Log.d("debug", ob.is_new_change + "");
+
 
         describeob = view.findViewById(R.id.describeob);
         timeob = view.findViewById(R.id.timeob);
@@ -98,6 +108,7 @@ public class ViewObservation extends Fragment {
         weather = view.findViewById(R.id.weather);
         category = view.findViewById(R.id.categoryob);
         title = view.findViewById(R.id.titleob);
+        notfoundsection = view.findViewById(R.id.notfoundsection);
 
         // Setting name, location and text for the view here
         title.setText(ob.title);
@@ -108,7 +119,13 @@ public class ViewObservation extends Fragment {
         weather.setText(ob.weather.trim().length()==0 ? "Unknown" : ob.weather.trim());
 
         // Setting up the RecyclerView and its adapter
-        ObservationMediaAdapter adapter = new ObservationMediaAdapter(getContext(), ob.getmedias());
+        ArrayList<ObservationMedia> medias = ob.getmedias();
+        ObservationMediaAdapter adapter = new ObservationMediaAdapter(getContext(), medias);
+
+        // Check if the media list is empty, if yes then set the empty label to visible
+        if(medias.isEmpty())
+            notfoundsection.setVisibility(View.VISIBLE);
+
         adapter.observation = ob;
         StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         grid.setLayoutManager(manager);

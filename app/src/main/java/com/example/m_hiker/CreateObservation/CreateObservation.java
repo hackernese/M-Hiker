@@ -237,7 +237,7 @@ public class CreateObservation extends Fragment {
                 }
 
                 // Simply navigate back to the hike page
-//                getActivity().onBackPressed();
+                getActivity().onBackPressed();
             }
         });
 

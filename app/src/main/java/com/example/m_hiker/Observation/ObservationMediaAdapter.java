@@ -1,6 +1,7 @@
 package com.example.m_hiker.Observation;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,8 @@ public class ObservationMediaAdapter extends RecyclerView.Adapter<ObservationMed
         this.context = context;
         this.items = items;
     }
+
+    ImageView placeholder;
 
     @NonNull
     @Override
