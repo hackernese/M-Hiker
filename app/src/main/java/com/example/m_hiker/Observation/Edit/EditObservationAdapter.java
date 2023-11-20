@@ -12,9 +12,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.m_hiker.CreateObservation.ImageGrid.ImageItem;
+import com.example.m_hiker.Dialogs.MediaPlayer.MediaSlider;
 import com.example.m_hiker.R;
+import com.example.m_hiker.database.Observation;
+import com.example.m_hiker.database.ObservationMedia;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,7 +63,7 @@ public class EditObservationAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Context context;
 
-    public boolean selected;
+    EditObservation parent;
 
 //    public void updateItems(ArrayList<ImageItem> items){
 //        this.images = items;
@@ -67,6 +73,12 @@ public class EditObservationAdapter extends BaseAdapter {
 //    }
 
     public List<View> allviews = new ArrayList<>();
+    public TextView title;
+    public Observation observation;
+
+    // Whenever the user switch to a different view / menu, reset the following variables
+    public int selected_items = 0;
+    public boolean selected;
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
@@ -97,21 +109,32 @@ public class EditObservationAdapter extends BaseAdapter {
             public void onClick(View view) {
 //                callback.before();
 //                selected = false;
-                item.setIsAdd(!item.isadded());
+
+                if(!selected){
+
+                    // User simply wanna view this specific image / video
+                    new MediaSlider(context, observation.getmedias(), i, observation );
+                    return;
+                }
+
+                item.is_add = !item.is_add;
+                selected_items += item.is_add ? 1 : -1;
+
+                title.setText(selected_items + " items selected");
+
                 if(item.isadded())
                     checked.setVisibility(View.VISIBLE);
                 else
                     checked.setVisibility(View.GONE);
 
-                if(images.stream().filter(o->o.isadded()).count() ==0 ){
+                if(selected_items==0 ){
 
                     // Users has stopped selecting stuffs
                     selected = false;
                     callback.end();
+                    title.setText("Edit Observation");
                 }
 
-//                empty.setVisibility(View.GONE);
-//                callback.after();
             }
         });
 
@@ -125,6 +148,8 @@ public class EditObservationAdapter extends BaseAdapter {
 
                 callback.start(checked, item);
                 selected = true;
+                selected_items += 1;
+                title.setText(selected_items + " items selected");
                 return true;
             }
         });

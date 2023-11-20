@@ -262,8 +262,9 @@ public class Hikes implements CommonTable{
     public double longtitude; // longitude of the hike
 
     public int companion;
-    String created;
-    String modified;
+    public String created;
+    public String modified;
+
 
     public Hikes(String name,
                  String location,

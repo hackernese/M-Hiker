@@ -17,8 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.m_hiker.Hike.ObservationCard.ObservationCardAdapter;
 import com.example.m_hiker.R;
+import com.example.m_hiker.database.Hikes;
 import com.example.m_hiker.database.Observation;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -68,6 +71,8 @@ public class ViewHike extends Fragment {
 
     View emptysection;
 
+    Hikes hike = new Hikes();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,10 +81,11 @@ public class ViewHike extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_hike, container, false);
 
         // Extracting arguments;
-        if(getArguments().containsKey("name"))
-            name = getArguments().getString("name");
-        if(getArguments().containsKey("id"))
-            hike_id = getArguments().getInt("id");
+        if(getArguments().containsKey("hike")) {
+            hike = ((Hikes.ParcelHike) getArguments().getParcelable("hike")).object;
+            name = hike.name;
+            hike_id = hike.id;
+        }
 
         // Setting the correct text labels of this
         TextView toolbar = view.findViewById(R.id.toolbarhikedetails);
@@ -118,16 +124,41 @@ public class ViewHike extends Fragment {
         });
 
         // Access information of this specific hike
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        View dialogview = LayoutInflater.from(getContext()).inflate(
+                R.layout.info_checker_bottom_menu,
+                (LinearLayout)view.findViewById(R.id.infocontainer)
+        );
         view.findViewById(R.id.accessinfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog dialog = new BottomSheetDialog(getContext());
-                View dialogview = LayoutInflater.from(getContext()).inflate(
-                        R.layout.info_checker_bottom_menu,
-                        (LinearLayout)view.findViewById(R.id.infocontainer)
 
 
-                );
+                // Setting the data into the view
+                TextView name = dialogview.findViewById(R.id.namelabelinfo);
+                TextView location = dialogview.findViewById(R.id.locationlabelinfo);
+                TextView lat = dialogview.findViewById(R.id.latlabelinfo);
+                TextView long_ = dialogview.findViewById(R.id.longlabelinfo);
+                TextView date = dialogview.findViewById(R.id.datelabelsection);
+                TextView length = dialogview.findViewById(R.id.lengthlabelsection);
+                TextView level = dialogview.findViewById(R.id.levellabelsection);
+                TextView parking = dialogview.findViewById(R.id.parkinglabelsection);
+                TextView companions = dialogview.findViewById(R.id.companionslabelsection);
+                TextView created = dialogview.findViewById(R.id.createdlabelsection);
+                TextView description = dialogview.findViewById(R.id.descriptionlabelsection);
+
+                // Setting texts into the extracted views
+                name.setText(hike.name);
+                location.setText(hike.location);
+                lat.setText(hike.lat + "");
+                long_.setText(hike.longtitude + "");
+                date.setText(hike.date);
+                length.setText(hike.length + "");
+                level.setText(hike.level);
+                parking.setText(hike.parking ? "Available" : "Unavailable");
+                companions.setText(hike.companion + "");
+                created.setText(hike.created);
+                description.setText(hike.description);
 
                 // Setting default value
                 dialog.setContentView(dialogview);

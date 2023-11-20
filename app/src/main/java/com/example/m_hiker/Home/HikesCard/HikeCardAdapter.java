@@ -145,8 +145,11 @@ public class HikeCardAdapter extends RecyclerView.Adapter<CardHolder>{
     private void navigate_to_hike(int pos){
         Bundle bundle = new Bundle();
 
-        bundle.putString("name", items.get(pos).name);
-        bundle.putInt("id", items.get(pos).id);
+//        bundle.putString("name", items.get(pos).name);
+//        bundle.putInt("id", items.get(pos).id);
+
+        bundle.putParcelable("hike", items.get(pos).getParcelObject());
+
 
         try{
             Navigation.findNavController(inflated_view).navigate(R.id.action_homepage_to_viewHike, bundle);

@@ -7,16 +7,20 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.m_hiker.CreateObservation.ImageGrid.ImageGridAdapter;
@@ -117,7 +121,7 @@ public class EditObservation extends Fragment {
     View editmedia;
     View editgeneral;
 
-    GridView imagegrid;
+    public GridView imagegrid;
 
     private long current_date_as_long;
 
@@ -133,8 +137,13 @@ public class EditObservation extends Fragment {
 
     private Observation object = null;
 
-    ImageButton closeselectedbtn;
+    public ImageButton closeselectedbtn;
 
+    TextView title;
+
+    public View loadingsectionl;
+
+    ImageView spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,6 +157,7 @@ public class EditObservation extends Fragment {
 
 
         // Grabbing necessary views
+        title = view.findViewById(R.id.titleeditob);
         titlebox = view.findViewById(R.id.titlebox);
         datebox = view.findViewById(R.id.datebox);
         categorybox = view.findViewById(R.id.categorybox);
@@ -160,7 +170,15 @@ public class EditObservation extends Fragment {
         addnewmediabtn = view.findViewById(R.id.addnewmedia);
         deletebtn = view.findViewById(R.id.deletebtneditob);
         closeselectedbtn = view.findViewById(R.id.exitbtn);
+        loadingsectionl = view.findViewById(R.id.loadingmedia);
         commentbox.setText("\n\n\n\n\n\n");
+        spinner = view.findViewById(R.id.spinnermedia);
+
+        // Grabbing animation
+        Animation rotate = AnimationUtils.loadAnimation(getContext(), R.anim.spin_animation);
+        spinner.startAnimation(rotate);
+
+
 
         // Grabbing the bundle data
         Bundle bundle = getArguments();
@@ -224,6 +242,11 @@ public class EditObservation extends Fragment {
                     empty.setVisibility(View.GONE);
                     full.setVisibility(View.GONE);
                 });
+
+                // Resetting some variables inside the Adapter
+                adapter.selected_items = 0;
+                adapter.title.setText("Edit Observation");
+                adapter.selected = false;
             }
         };
 
@@ -256,15 +279,22 @@ public class EditObservation extends Fragment {
                 closeSelection.run();
             }
         });
+        adapter.title = title;
+        adapter.observation = object;
+        adapter.parent = this;
         imagegrid.setAdapter(adapter);
 
+
+        // Delete specific media files
         deletebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 DeleteWarning dialog = new DeleteWarning(new DeleteWarning.Callback() {
                     @Override
                     public void cancel() {
-
+                        imagegrid.setVisibility(View.VISIBLE);
+                        loadingsectionl.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -274,21 +304,26 @@ public class EditObservation extends Fragment {
                             obj.object.delete();
                         });
 
-                        // Make sure that all items are unselected when this happens
-                        closeSelection.run();
-
                         // Remove out of the UI
                         adapter.images.removeIf(o->o.isadded());
                         imagegrid.setAdapter(adapter);
                         ToastMessage.success(view, "Successfully deleted selected items");
+
+                        // Make sure that all items are unselected when this happens
+                        closeSelection.run();
+
+                        imagegrid.setVisibility(View.VISIBLE);
+                        loadingsectionl.setVisibility(View.GONE);
                     }
                 });
-
+                imagegrid.setVisibility(View.GONE);
+                loadingsectionl.setVisibility(View.VISIBLE);
                 dialog.show(getActivity().getSupportFragmentManager(), "Warning");
             }
         });
 
         // Save action
+        Handler handler = new Handler();
         savebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -340,55 +375,74 @@ public class EditObservation extends Fragment {
         // When new files are being picked, they will show here
         MediaPicker picker = new MediaPicker(this, o->{
 
+
             List<Uri> selected = ((List<Uri>)o);
 
-            if (!selected.isEmpty()) {
-                // When users has selected media
-                for(Uri uri : selected) {
+            loadingsectionl.setVisibility(View.VISIBLE);
+            imagegrid.setVisibility(View.GONE);
 
-                    InputStream inputStream;
-                    try{
-                        inputStream = getContext().getContentResolver().openInputStream(uri);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        return;
-                    }
-
-                    String extension = getContext().getContentResolver().getType(uri);
-                    String[] splitted = uri.toString().split("/");
-                    String filename = splitted[splitted.length - 1] +
-                            ( extension.startsWith("image") ? ".jpg" : ".mp4" );
-
-                    if(func.copyInputStream(inputStream, filename)){
-                        Log.d("debug", "Successfully cached file " + filename);
-                    }else{
-                        Log.d("debug", "Failed to cache file " + filename);
-                    }
-
-                    String fullpath = storex.folder + File.separator + filename;
-                    ImageItem item = new ImageItem(Uri.fromFile(new File(fullpath)));
-                    item.path = fullpath;
-                    items.add(item);
-
-                    ObservationMedia media = new ObservationMedia(object.id, fullpath, false);
-                    db.insert(media);
-
-                    item.object = media;
-                }
-
-                Log.d("debug", adapter.images.size() + "");
-                adapter.images = items;
-                imagegrid.setAdapter(adapter);
-
-                ToastMessage.success(view, "Successfully added new media files");
-
-                object.is_new_change = true;
+            if (selected.isEmpty()) {
+                return;
             }
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // When users has selected media
+                    for(Uri uri : selected) {
 
+                        InputStream inputStream;
+                        try{
+                            inputStream = getContext().getContentResolver().openInputStream(uri);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            return;
+                        }
+
+
+                        // Copying and backing up the images
+                        String extension = getContext().getContentResolver().getType(uri);
+                        String[] splitted = uri.toString().split("/");
+                        String filename = splitted[splitted.length - 1] +
+                                ( extension.startsWith("image") ? ".jpg" : ".mp4" );
+
+                        if(func.copyInputStream(inputStream, filename)){
+                            Log.d("debug", "Successfully cached file " + filename);
+                        }else{
+                            Log.d("debug", "Failed to cache file " + filename);
+                        }
+
+
+                        // Building Uri
+                        String fullpath = storex.folder + File.separator + filename;
+                        ImageItem item = new ImageItem(Uri.fromFile(new File(fullpath)));
+                        item.path = fullpath;
+                        items.add(item);
+
+                        // Adding to database
+                        ObservationMedia media = new ObservationMedia(object.id, fullpath, false);
+                        media.id = (int)db.insert(media);
+
+                        // Setting the media object
+                        item.object = media;
+                    }
+
+                    Log.d("debug", adapter.images.size() + "");
+                    adapter.images = items;
+                    imagegrid.setAdapter(adapter);
+
+                    imagegrid.setVisibility(View.VISIBLE);
+                    loadingsectionl.setVisibility(View.GONE);
+                    ToastMessage.success(view, "Successfully added new media files");
+
+                    object.is_new_change = true;
+                }
+            });
         });
 
 
         // Setting click listeners
+
+        // Add new media files button goes here
         addnewmediabtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -465,6 +519,10 @@ public class EditObservation extends Fragment {
                     editgeneral.setVisibility(View.GONE);
                     editmedia.setVisibility(View.VISIBLE);
                 }
+
+                // Imagine a scenario where the user is currently selecting itemd in the "Media" section
+                // now they wanna switch to the "General" section, it's best to call some method to clear all
+                closeSelection.run();
 
                 return true;
             }
