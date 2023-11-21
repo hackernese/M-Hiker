@@ -81,7 +81,7 @@ public class ObservationMedia implements CommonTable{
         };
 
 
-        String selection = "id = ?";
+        String selection = "id = ?";      // Android's SQL Helper will sanitize behind the scene and replace with "?"
         String[] arguments = { id + "" }; // Used used in WHERE clause
 
         Cursor cursor = query.query(

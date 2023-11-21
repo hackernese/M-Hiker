@@ -1,25 +1,14 @@
 package com.example.m_hiker.CreateObservation;
-
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.m_hiker.CreateObservation.ImageGrid.ImageGridAdapter;
 import com.example.m_hiker.CreateObservation.ImageGrid.ImageItem;
 import com.example.m_hiker.CreateObservation.screens.CreateObservationDate;
@@ -30,22 +19,11 @@ import com.example.m_hiker.R;
 import com.example.m_hiker.database.DatabaseMHike;
 import com.example.m_hiker.database.Observation;
 import com.example.m_hiker.database.ObservationMedia;
-import com.example.m_hiker.utils.debug;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreateObservation#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreateObservation extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -61,15 +39,6 @@ public class CreateObservation extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreateObservation.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CreateObservation newInstance(String param1, String param2) {
         CreateObservation fragment = new CreateObservation();
         Bundle args = new Bundle();

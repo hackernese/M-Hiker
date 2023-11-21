@@ -51,11 +51,6 @@
             android:value="${MAPS_API_KEY}"/>
         <activity
             android:screenOrientation="portrait"
-            android:name=".MapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_maps" />
-        <activity
-            android:screenOrientation="portrait"
             android:name=".IntroPage"
             android:exported="false" />
         <activity
